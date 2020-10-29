@@ -1,0 +1,16 @@
+{
+  "name": "will-do-app",
+  "version": "1.0.0",
+  "description": "Simple to-do list app",
+  "main": "index.js",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "mongoose": "^5.10.11"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "vqa",
+  "license": "MIT"
+}
