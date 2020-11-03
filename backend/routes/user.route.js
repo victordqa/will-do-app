@@ -39,7 +39,14 @@ router.post("/add", async (req, res) => {
       },
       (err, token) => {
         if (err) throw err;
-        res.json({ token, username: savedUser.username });
+        res.json({
+          token,
+          user: {
+            id: savedUser.id,
+            name: savedUser.username,
+            email: savedUser.email,
+          },
+        });
       }
     );
   } catch (error) {

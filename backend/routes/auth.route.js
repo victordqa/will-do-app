@@ -5,10 +5,10 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const router = express.Router();
 
-//* Route:  POST /api/users/auth
+//* Route:  POST /api/auth
 //* Descr:  Authenticate user
 //* Access: Public
-router.post("/auth", async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     let { email, password } = req.body;
 
@@ -24,26 +24,33 @@ router.post("/auth", async (req, res) => {
     }
 
     //Verify password
-    salt = await bcrypt.genSalt(10);
-    hashedPassword = await bcrypt.hash(password, salt);
-
-    //Create new user
-    let newUser = new User({ username, email, password: hashedPassword });
-    let savedUser = await newUser.save();
-    jwt.sign(
-      { _id: savedUser._id },
-      process.env.JWT_SECRET,
-      {
-        expiresIn: 3600,
-      },
-      (err, token) => {
-        if (err) throw err;
-        res.json({ token, username: savedUser.username });
-      }
-    );
+    let savedUser = await User.findOne({ email });
+    let match = await bcrypt.compare(password, savedUser.password);
+    if (!match) {
+      return res.status(400).json({ msg: "Invalid password" });
+    } else {
+      jwt.sign(
+        { _id: savedUser._id },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: 3600,
+        },
+        (err, token) => {
+          if (err) throw err;
+          res.json({
+            token,
+            user: {
+              id: savedUser.id,
+              name: savedUser.username,
+              email: savedUser.email,
+            },
+          });
+        }
+      );
+    }
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ msg: "Server error" });
+    return res.status(500).json({ msg: error.message });
   }
 });
 
