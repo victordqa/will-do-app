@@ -5,26 +5,25 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const router = express.Router();
 
-//* Route:  POST /api/users/add
-//* Descr:  Register new user
+//* Route:  POST /api/users/auth
+//* Descr:  Authenticate user
 //* Access: Public
-router.post("/add", async (req, res) => {
+router.post("/auth", async (req, res) => {
   try {
-    let { username, email, password } = req.body;
+    let { email, password } = req.body;
 
     //Validations
-    if (!username || !email || !password) {
+    if (!email || !password) {
       return res.status(400).json({ msg: "Please, enter all fields" });
     }
 
-    //Check if new user has a unique email adress
-
+    //Check if user exists
     let isRegistred = await User.findOne({ email });
-    if (isRegistred) {
-      return res.status(400).json({ msg: "User already registred" });
+    if (!isRegistred) {
+      return res.status(400).json({ msg: "User does not exist" });
     }
 
-    //Hash and salt password
+    //Verify password
     salt = await bcrypt.genSalt(10);
     hashedPassword = await bcrypt.hash(password, salt);
 
