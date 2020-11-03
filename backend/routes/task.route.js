@@ -1,7 +1,5 @@
-const User = require("../models/User.model");
+const Task = require("../models/Task.model");
 const express = require("express");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 const auth = require("../middleware/auth");
 require("dotenv").config();
 const router = express.Router();
