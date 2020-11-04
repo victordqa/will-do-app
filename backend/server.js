@@ -26,10 +26,12 @@ app.use(express.json());
 //Import routes
 const userRoute = require("./routes/user.route");
 const authRoute = require("./routes/auth.route");
+const taskRoute = require("./routes/task.route");
 
 //Mount routes on express app
-app.use("/api/users", userRoute);
+app.use("/api/user", userRoute);
 app.use("/api/auth", authRoute);
+app.use("/api/task", taskRoute);
 
 app.listen(port, () => {
   console.log(`Server is listening at http://localhost:${port}`);
