@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 const NavContainer = styled.div`
   display: flex;
@@ -18,6 +19,9 @@ const LogoContainer = styled.div`
   margin: 0.4rem;
   padding: 0.1rem;
 `;
+const Spacer = styled.div`
+  height: 3rem;
+`;
 
 const LinksContainer = styled.div`
   display: flex;
@@ -25,15 +29,30 @@ const LinksContainer = styled.div`
   align-items: center;
   margin-right: 1rem;
 `;
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  margin-right: 1rem;
+  &:visited {
+    color: inherit;
+  }
+`;
+
 function Navbar() {
   return (
-    <NavContainer>
-      <LogoContainer>✅WILL DO!</LogoContainer>
-      <LinksContainer>
-        <div style={{ marginRight: "1rem" }}>Log In</div>
-        <div style={{ fontWeight: "bold" }}>Register</div>
-      </LinksContainer>
-    </NavContainer>
+    <>
+      <NavContainer>
+        <StyledLink to="/">
+          <LogoContainer>✅WILL DO!</LogoContainer>
+        </StyledLink>
+        <LinksContainer>
+          <StyledLink to="/login">Log In</StyledLink>
+          <StyledLink to="/register">
+            <b>Register</b>
+          </StyledLink>
+        </LinksContainer>
+      </NavContainer>
+      <Spacer></Spacer>
+    </>
   );
 }
 

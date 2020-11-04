@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
+import styled from "styled-components";
 
 function Login() {
-  return <div></div>;
+  return <div>LOG IN</div>;
 }
 
 export default Login;

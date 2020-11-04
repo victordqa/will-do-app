@@ -13,9 +13,12 @@ const FooterContainer = styled.div`
 `;
 
 function Footer() {
+  let d = new Date();
+  let currentYear = d.getFullYear();
+
   return (
     <FooterContainer>
-      All Rights Reserved © WIIL DO! {Date.now().getFullYear}
+      All Rights Reserved © {currentYear} WILL DO!
     </FooterContainer>
   );
 }
