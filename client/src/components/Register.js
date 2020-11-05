@@ -17,30 +17,26 @@ function Register() {
     setUser({ ...user, [name]: value });
   }
 
-  const FormContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  `;
-
   return (
     <div>
       <form>
-        <label For="username"> Username</label>
+        <label For="username"> Username </label>
         <input
           type="text"
           name="username"
           value={user.username}
           onChange={(event) => handleInputChanges(event)}
         ></input>
-        <label For="email"> email</label>
+        <br />
+        <label For="mail"> Email </label>
         <input
           type="email"
           name="email"
           value={user.email}
           onChange={(event) => handleInputChanges(event)}
         ></input>
-        <label For="password"> Password</label>
+        <br />
+        <label For="password"> Password </label>
         <input
           type="password"
           name="password"
