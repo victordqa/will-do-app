@@ -7,6 +7,7 @@ const TaskContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  max-width: 80%;
 `;
 
 function Tasks() {
