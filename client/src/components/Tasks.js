@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import mockTasks from "../mockTasks";
+import { connect } from "react-redux";
+import { getTaskAction, deleteTaskAction } from "../redux/actions/taskActions";
 
 const TaskContainer = styled.div`
   border: 2px solid white;
@@ -10,21 +12,22 @@ const TaskContainer = styled.div`
   max-width: 80%;
 `;
 
-function Tasks() {
-  const [tasks, setTasks] = useState(mockTasks);
+function Tasks({ getTaskAction, deleteTaskAction, tasks }) {
+  //Get tasks from redux store
   const [newTask, setNewTask] = useState({
     importance: 0,
     description: "",
   });
 
-  function deleteTask(taskId) {
-    setTasks(tasks.filter((task) => task._id != taskId));
+  function deleteTaskHandler(taskId) {
+    console.log(taskId);
+    deleteTaskAction(taskId);
   }
 
   function addTask(newTask) {
-    let _id = Math.random;
-    console.log([...tasks, newTask]);
-    setTasks([...tasks, newTask]);
+    let _id = Math.random();
+    newTask._id = _id;
+    // setTasks([...tasks, newTask]);
   }
 
   function handleInputChanges(event) {
@@ -35,10 +38,9 @@ function Tasks() {
   }
   //Create task cards
   let mappedTasks = tasks.map((task) => (
-    <TaskContainer>
-      {" "}
-      <p key={task._id}>
-        <button onClick={() => deleteTask(task._id)}>DELETE</button>{" "}
+    <TaskContainer key={task._id}>
+      <p>
+        <button onClick={() => deleteTaskHandler(task._id)}>DELETE</button>{" "}
         {task.importance}-{task.description}
       </p>
     </TaskContainer>
@@ -47,7 +49,7 @@ function Tasks() {
   return (
     <div>
       <form onSubmit={(e) => e.preventDefault()}>
-        <label for="description">
+        <label htmlFor="description">
           {" "}
           Task description
           <input
@@ -57,7 +59,7 @@ function Tasks() {
             onChange={(event) => handleInputChanges(event)}
           ></input>
         </label>
-        <label for="importance">
+        <label htmlFor="importance">
           {" "}
           Task importance
           <input
@@ -76,4 +78,14 @@ function Tasks() {
   );
 }
 
-export default Tasks;
+let mapStateToProps = (store) => {
+  return { tasks: store.task };
+};
+
+let mapDispatchToProps = (dispatch) => {
+  return {
+    getTaskAction: () => dispatch(getTaskAction()),
+    deleteTaskAction: (taskId) => dispatch(deleteTaskAction(taskId)),
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Tasks);

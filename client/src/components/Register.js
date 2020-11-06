@@ -20,7 +20,7 @@ function Register() {
   return (
     <div>
       <form>
-        <label For="username"> Username </label>
+        <label htmlFor="username"> Username </label>
         <input
           type="text"
           name="username"
@@ -28,7 +28,7 @@ function Register() {
           onChange={(event) => handleInputChanges(event)}
         ></input>
         <br />
-        <label For="mail"> Email </label>
+        <label htmlFor="mail"> Email </label>
         <input
           type="email"
           name="email"
@@ -36,7 +36,7 @@ function Register() {
           onChange={(event) => handleInputChanges(event)}
         ></input>
         <br />
-        <label For="password"> Password </label>
+        <label htmlFor="password"> Password </label>
         <input
           type="password"
           name="password"
