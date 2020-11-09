@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
-import { deleteTaskAction, addTaskAction } from "../redux/actions/taskActions";
+import {
+  deleteTaskAction,
+  addTaskAction,
+  getTasksAction,
+} from "../redux/actions/taskActions";
 
 const TaskContainer = styled.div`
   border: 2px solid white;
@@ -11,8 +15,12 @@ const TaskContainer = styled.div`
   max-width: 80%;
 `;
 
-function Tasks({ addTaskAction, deleteTaskAction, tasks }) {
-  //Get tasks from redux store
+function Tasks({ addTaskAction, deleteTaskAction, tasks, getTasksAction }) {
+  //Get tasks from database
+  useEffect(() => {
+    getTasksAction();
+  }, []);
+
   const [newTask, setNewTask] = useState({
     importance: 0,
     description: "",
@@ -78,12 +86,12 @@ function Tasks({ addTaskAction, deleteTaskAction, tasks }) {
 }
 
 let mapStateToProps = (store) => {
-  return { tasks: store.task };
+  return { tasks: store.tasks, isLoading: store.loading, error: store.error };
 };
 
 let mapDispatchToProps = (dispatch) => {
   return {
-    // getTaskAction: () => dispatch(getTaskAction()),
+    getTasksAction: () => dispatch(getTasksAction()),
     deleteTaskAction: (taskId) => dispatch(deleteTaskAction(taskId)),
     addTaskAction: (newTask) => dispatch(addTaskAction(newTask)),
   };

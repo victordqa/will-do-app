@@ -1,13 +1,23 @@
-import { ADD_TASK, DELETE_TASK, GET_TASK, LOADING_TASK } from "./types";
+import {
+  ADD_TASK,
+  DELETE_TASK,
+  GET_TASK,
+  LOADING_TASK,
+  LOADING_TASK_FAILURE,
+} from "./types";
 import axios from "axios";
 
-export const getTaskAction = () => {
+//Get tasks from api
+export const getTasksAction = () => {
   return async (dispatch) => {
-    dispatch(loadingTaskAction());
-    try{
-      await tasks = axios.get('') 
+    dispatch(loadingTasksAction());
+    try {
+      let tasks = await axios.get("http://localhost:5000/api/task/all_tasks");
+      dispatch(loadingTasksSuccsessAction(tasks));
+    } catch (e) {
+      dispatch(loadingTasksFailureAction(e.message));
+      throw e.message;
     }
-    catch(e){throw e}
   };
 };
 
@@ -19,6 +29,13 @@ export const addTaskAction = (newTask) => {
   return { type: ADD_TASK, payload: newTask };
 };
 
-export const loadingTaskAction = () => {
+export const loadingTasksAction = () => {
   return { type: LOADING_TASK };
+};
+export const loadingTasksFailureAction = () => {
+  return { type: LOADING_TASK_FAILURE };
+};
+
+export const loadingTasksSuccsessAction = () => {
+  return { type: LOADING_TASK_SUCCSESS };
 };

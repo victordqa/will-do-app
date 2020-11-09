@@ -1,4 +1,5 @@
 export const ADD_TASK = "ADD_TASK";
 export const DELETE_TASK = "DELETE_TASK";
-export const GET_TASK = "GET_TASK";
-export const LOADING_TASK = "LOADING_TASK";
+export const LOADING_TASKS = "GET_TASKS";
+export const LOADING_TASKS_SUCCSESS = "GET_TASK_SUCCSESS";
+export const LOADING_TASKS_FAILURE = "LOADING_TASK_FAILURE";
