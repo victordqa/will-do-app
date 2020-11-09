@@ -43,4 +43,18 @@ router.get("/user_tasks", auth, async (req, res) => {
   }
 });
 
+//* Route:  GET/api/task/all_tasks
+//* Descr:  Get all tasks in datasabse
+//* Access: Public
+router.get("/all_tasks", async (req, res) => {
+  try {
+    // Get all tasks, sort descending
+    let tasks = await Task.find().sort({ importance: -1 });
+    res.json(tasks);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ msg: "Server error" });
+  }
+});
+
 module.exports = router;
