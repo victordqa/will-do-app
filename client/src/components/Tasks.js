@@ -16,7 +16,7 @@ const TaskContainer = styled.div`
 `;
 
 function Tasks({ addTaskAction, deleteTaskAction, tasks, getTasksAction }) {
-  //Get tasks from database
+  // Get tasks from database
   useEffect(() => {
     getTasksAction();
   }, []);
@@ -27,7 +27,6 @@ function Tasks({ addTaskAction, deleteTaskAction, tasks, getTasksAction }) {
   });
 
   function deleteTaskHandler(taskId) {
-    console.log(taskId);
     deleteTaskAction(taskId);
   }
 
@@ -80,13 +79,18 @@ function Tasks({ addTaskAction, deleteTaskAction, tasks, getTasksAction }) {
       <button onClick={() => addTaskHandler(newTask)}>
         <b>Add Task!</b>
       </button>
+
       {mappedTasks}
     </div>
   );
 }
 
 let mapStateToProps = (store) => {
-  return { tasks: store.tasks, isLoading: store.loading, error: store.error };
+  return {
+    tasks: store.task.tasks,
+    isLoading: store.task.loading,
+    error: store.task.error,
+  };
 };
 
 let mapDispatchToProps = (dispatch) => {

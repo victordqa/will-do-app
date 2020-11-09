@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const express = require("express");
+const cors = require("cors");
 //  install and require cors
 
 require("dotenv").config();
@@ -20,8 +21,9 @@ db.once("open", () => console.log("Connection to DB succsessful!"));
 const app = express();
 const port = process.env.PORT || 5000;
 
-//Load express json parser
+//Load express json parser and CORS
 app.use(express.json());
+app.use(cors());
 
 //Import routes
 const userRoute = require("./routes/user.route");

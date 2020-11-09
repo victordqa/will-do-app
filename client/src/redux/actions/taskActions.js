@@ -1,26 +1,24 @@
 import {
   ADD_TASK,
   DELETE_TASK,
-  GET_TASK,
-  LOADING_TASK,
-  LOADING_TASK_FAILURE,
+  LOADING_TASKS_SUCCSESS,
+  LOADING_TASKS,
+  LOADING_TASKS_FAILURE,
 } from "./types";
 import axios from "axios";
 
 //Get tasks from api
-export const getTasksAction = () => {
-  return async (dispatch) => {
-    dispatch(loadingTasksAction());
-    try {
-      let tasks = await axios.get("http://localhost:5000/api/task/all_tasks");
-      dispatch(loadingTasksSuccsessAction(tasks));
-    } catch (e) {
-      dispatch(loadingTasksFailureAction(e.message));
-      throw e.message;
-    }
-  };
+export const getTasksAction = () => async (dispatch) => {
+  dispatch(loadingTasksAction());
+  try {
+    let res = await axios.get("http://localhost:5000/api/task/all_tasks");
+    console.log("-----------------------", res);
+    dispatch(loadingTasksSuccsessAction(res.data));
+  } catch (e) {
+    dispatch(loadingTasksFailureAction(e.message));
+    throw e.message;
+  }
 };
-
 export const deleteTaskAction = (taskId) => {
   return { type: DELETE_TASK, payload: taskId };
 };
@@ -30,12 +28,12 @@ export const addTaskAction = (newTask) => {
 };
 
 export const loadingTasksAction = () => {
-  return { type: LOADING_TASK };
+  return { type: LOADING_TASKS };
 };
 export const loadingTasksFailureAction = () => {
-  return { type: LOADING_TASK_FAILURE };
+  return { type: LOADING_TASKS_FAILURE };
 };
 
-export const loadingTasksSuccsessAction = () => {
-  return { type: LOADING_TASK_SUCCSESS };
+export const loadingTasksSuccsessAction = (data) => {
+  return { type: LOADING_TASKS_SUCCSESS, payload: data };
 };
