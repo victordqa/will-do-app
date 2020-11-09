@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import mockTasks from "../mockTasks";
 import { connect } from "react-redux";
-import { getTaskAction, deleteTaskAction } from "../redux/actions/taskActions";
+import { deleteTaskAction, addTaskAction } from "../redux/actions/taskActions";
 
 const TaskContainer = styled.div`
   border: 2px solid white;
@@ -12,7 +11,7 @@ const TaskContainer = styled.div`
   max-width: 80%;
 `;
 
-function Tasks({ getTaskAction, deleteTaskAction, tasks }) {
+function Tasks({ addTaskAction, deleteTaskAction, tasks }) {
   //Get tasks from redux store
   const [newTask, setNewTask] = useState({
     importance: 0,
@@ -24,13 +23,13 @@ function Tasks({ getTaskAction, deleteTaskAction, tasks }) {
     deleteTaskAction(taskId);
   }
 
-  function addTask(newTask) {
+  function addTaskHandler(newTask) {
     let _id = Math.random();
     newTask._id = _id;
-    // setTasks([...tasks, newTask]);
+    addTaskAction(newTask);
   }
 
-  function handleInputChanges(event) {
+  function onChangeHandler(event) {
     event.preventDefault();
     let name = event.target.name;
     let value = event.target.value;
@@ -56,7 +55,7 @@ function Tasks({ getTaskAction, deleteTaskAction, tasks }) {
             name="description"
             type="text"
             value={newTask.description}
-            onChange={(event) => handleInputChanges(event)}
+            onChange={(event) => onChangeHandler(event)}
           ></input>
         </label>
         <label htmlFor="importance">
@@ -66,11 +65,11 @@ function Tasks({ getTaskAction, deleteTaskAction, tasks }) {
             name="importance"
             type="text"
             value={newTask.importance}
-            onChange={(event) => handleInputChanges(event)}
+            onChange={(event) => onChangeHandler(event)}
           ></input>
         </label>
       </form>
-      <button onClick={() => addTask(newTask)}>
+      <button onClick={() => addTaskHandler(newTask)}>
         <b>Add Task!</b>
       </button>
       {mappedTasks}
@@ -84,8 +83,9 @@ let mapStateToProps = (store) => {
 
 let mapDispatchToProps = (dispatch) => {
   return {
-    getTaskAction: () => dispatch(getTaskAction()),
+    // getTaskAction: () => dispatch(getTaskAction()),
     deleteTaskAction: (taskId) => dispatch(deleteTaskAction(taskId)),
+    addTaskAction: (newTask) => dispatch(addTaskAction(newTask)),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Tasks);

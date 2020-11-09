@@ -6,7 +6,7 @@ let initialState = mockTasks;
 export const taskReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_TASK:
-      return [{ ...state }, action.payload];
+      return [...state, action.payload];
     case GET_TASK:
       return state; // kind of useless now but will poerform requests in future
     case DELETE_TASK:
