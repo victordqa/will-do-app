@@ -12,7 +12,6 @@ export const getTasksAction = () => async (dispatch) => {
   dispatch(loadingTasksAction());
   try {
     let res = await axios.get("http://localhost:5000/api/task/all_tasks");
-    console.log("-----------------------", res);
     dispatch(loadingTasksSuccsessAction(res.data));
   } catch (e) {
     dispatch(loadingTasksFailureAction(e.message));

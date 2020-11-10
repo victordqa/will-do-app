@@ -7,18 +7,7 @@ import {
 } from "../actions/types";
 
 let initialState = {
-  tasks: [
-    {
-      "importance": 14,
-      "isCompleted": false,
-      "_id": "5fa29bbab51c6a1e6cbed069",
-      "userId": "5fa195a8a01871379cf02642",
-      "description": "Tenis",
-      "createdAt": "2020-11-04T12:16:58.408Z",
-      "updatedAt": "2020-11-04T12:16:58.408Z",
-      "__v": 0,
-    },
-  ],
+  tasks: [],
   loading: false,
   error: "",
 };
