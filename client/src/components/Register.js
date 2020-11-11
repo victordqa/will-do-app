@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { connect } from "react-redux";
+import { registerAction } from "../redux/actions/authActions";
 
 function Register() {
   // Local states
@@ -9,9 +11,8 @@ function Register() {
     password: "",
   });
 
-  function handleInputChanges(event) {
+  function onChangeHandler(event) {
     event.preventDefault();
-    console.log(event);
     let name = event.target.name;
     let value = event.target.value;
     setUser({ ...user, [name]: value });
@@ -25,7 +26,7 @@ function Register() {
           type="text"
           name="username"
           value={user.username}
-          onChange={(event) => handleInputChanges(event)}
+          onChange={(event) => onChangeHandler(event)}
         ></input>
         <br />
         <label htmlFor="mail"> Email </label>
@@ -33,7 +34,7 @@ function Register() {
           type="email"
           name="email"
           value={user.email}
-          onChange={(event) => handleInputChanges(event)}
+          onChange={(event) => onChangeHandler(event)}
         ></input>
         <br />
         <label htmlFor="password"> Password </label>
@@ -41,11 +42,24 @@ function Register() {
           type="password"
           name="password"
           value={user.password}
-          onChange={(event) => handleInputChanges(event)}
+          onChange={(event) => onChangeHandler(event)}
         ></input>
+        <br></br>
+        <hr></hr>
+        <button onClick>Register</button>
+        <p>Status:</p>
       </form>
     </div>
   );
 }
 
-export default Register;
+const mapStateToProps = (store) => {};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    registerAction: ({ username, email, password }) =>
+      dispatch(registerAction({ username, email, password })),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Register);

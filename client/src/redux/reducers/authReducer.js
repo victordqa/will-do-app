@@ -34,7 +34,7 @@ export const authReducer = (state = initialState, action) => {
     case LOGIN_SUCCSESS:
       return {
         ...state, //test if cloning the state is necessary
-        ...action.payload,
+        ...action.payload, // add user and token retrieved from server
         isAuthenticaded: false,
         isLoading: false,
       };

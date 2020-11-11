@@ -3,7 +3,6 @@ import {
   DELETE_TASK,
   LOADING_TASKS,
   LOADING_TASKS_SUCCSESS,
-  LOADING_TASKS_FAILURE,
 } from "../actions/types";
 
 let initialState = {
@@ -20,8 +19,6 @@ export const taskReducer = (state = initialState, action) => {
       return { ...state, loading: true };
     case LOADING_TASKS_SUCCSESS:
       return { ...state, tasks: action.payload, error: "", loading: false };
-    case LOADING_TASKS_FAILURE:
-      return { ...state, error: action.payload };
     case DELETE_TASK:
       let filteredTasks = state.tasks.filter(
         (task) => task._id !== action.payload

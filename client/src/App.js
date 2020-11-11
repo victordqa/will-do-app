@@ -6,10 +6,14 @@ import Tasks from "./components/Tasks";
 import Layout from "./components/Layout";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Provider } from "react-redux";
-
+import React, { useEffect } from "react";
+import { loadUser } from "./redux/actions/authActions";
 import { store } from "./redux/store";
 
 function App() {
+  useEffect(() => {
+    store.dispatch(loadUser());
+  }, []);
   return (
     <Provider store={store}>
       <Router>

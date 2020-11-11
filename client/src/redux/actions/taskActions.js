@@ -3,7 +3,6 @@ import {
   DELETE_TASK,
   LOADING_TASKS_SUCCSESS,
   LOADING_TASKS,
-  LOADING_TASKS_FAILURE,
 } from "./types";
 import axios from "axios";
 
@@ -14,8 +13,7 @@ export const getTasksAction = () => async (dispatch) => {
     let res = await axios.get("http://localhost:5000/api/task/all_tasks");
     dispatch(loadingTasksSuccsessAction(res.data));
   } catch (e) {
-    dispatch(loadingTasksFailureAction(e.message));
-    throw e.message;
+    console.error(e.message);
   }
 };
 export const deleteTaskAction = (taskId) => {
@@ -28,9 +26,6 @@ export const addTaskAction = (newTask) => {
 
 export const loadingTasksAction = () => {
   return { type: LOADING_TASKS };
-};
-export const loadingTasksFailureAction = () => {
-  return { type: LOADING_TASKS_FAILURE };
 };
 
 export const loadingTasksSuccsessAction = (data) => {

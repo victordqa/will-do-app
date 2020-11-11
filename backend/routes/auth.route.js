@@ -2,6 +2,7 @@ const User = require("../models/User.model");
 const express = require("express");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const auth = require("../middleware/auth");
 require("dotenv").config();
 const router = express.Router();
 
@@ -54,15 +55,15 @@ router.post("/", async (req, res) => {
   }
 });
 
-//* Route:  GET /api/users/get
-//* Descr:  Return  registred users
-//* Access: To pe Private
-router.get("/get", async (req, res) => {
+//* Route:  GET /api/auth /user
+//* Descr:  Return  user data based user token
+//* Access: Private
+router.get("/user", auth, async (req, res) => {
   try {
-    let users = await User.find({});
-    res.json(users);
+    let user = await User.findById(req.user._id).select("-password");
+    res.json(user);
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({ msg: "Server error" });
   }
 });
