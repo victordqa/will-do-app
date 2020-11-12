@@ -6,11 +6,11 @@ import {
 } from "./types";
 import axios from "axios";
 
-//Get tasks from api
+//Get user tasks from api
 export const getTasksAction = () => async (dispatch) => {
   dispatch(loadingTasksAction());
   try {
-    let res = await axios.get("http://localhost:5000/api/task/all_tasks");
+    let res = await axios.get("http://localhost:5000/api/task/user_tasks");
     dispatch(loadingTasksSuccsessAction(res.data));
   } catch (e) {
     console.error(e.message);
@@ -20,9 +20,7 @@ export const deleteTaskAction = (taskId) => {
   return { type: DELETE_TASK, payload: taskId };
 };
 
-export const addTaskAction = (newTask) => {
-  return { type: ADD_TASK, payload: newTask };
-};
+export const addTaskAction = (newTask) => async () => {};
 
 export const loadingTasksAction = () => {
   return { type: LOADING_TASKS };

@@ -7,8 +7,8 @@ import { clearErrorsAction } from "../redux/actions/errorActions";
 function Login({ logInAction, clearErrorsAction, error, isAuthenticaded }) {
   // Local states
   const [user, setUser] = useState({
-    email: "asdasd@gmail",
-    password: "123",
+    email: "victor@gmail.com",
+    password: "1234",
   });
 
   //Display server messages
@@ -18,6 +18,7 @@ function Login({ logInAction, clearErrorsAction, error, isAuthenticaded }) {
       setStatusMsg(error.msg);
     } else if (isAuthenticaded) {
       setStatusMsg("Logged in! You are good to go.");
+      window.location.href = "http://localhost:3000/tasks";
     }
     clearErrorsAction();
   }, [error.msg, isAuthenticaded]);

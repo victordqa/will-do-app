@@ -15,11 +15,20 @@ const TaskContainer = styled.div`
   max-width: 80%;
 `;
 
-function Tasks({ addTaskAction, deleteTaskAction, tasks, getTasksAction }) {
+function Tasks({
+  addTaskAction,
+  deleteTaskAction,
+  tasks,
+  getTasksAction,
+  user,
+  isAuthenticaded,
+}) {
   // Get tasks from database
   useEffect(() => {
     getTasksAction();
   }, []);
+
+  console.log("-----------------------", tasks);
 
   const [newTask, setNewTask] = useState({
     importance: 0,
@@ -54,6 +63,7 @@ function Tasks({ addTaskAction, deleteTaskAction, tasks, getTasksAction }) {
 
   return (
     <div>
+      <h3> {isAuthenticaded ? `Hello ${user.username}!` : ""} </h3>
       <form onSubmit={(e) => e.preventDefault()}>
         <label htmlFor="description">
           {" "}
@@ -79,8 +89,7 @@ function Tasks({ addTaskAction, deleteTaskAction, tasks, getTasksAction }) {
       <button onClick={() => addTaskHandler(newTask)}>
         <b>Add Task!</b>
       </button>
-
-      {mappedTasks}
+      <p>{tasks.length === 0 ? "No tasks :)" : mappedTasks}</p>
     </div>
   );
 }
@@ -90,6 +99,8 @@ let mapStateToProps = (store) => {
     tasks: store.task.tasks,
     isLoading: store.task.loading,
     error: store.task.error,
+    user: store.auth.user,
+    isAuthenticaded: store.auth.isAuthenticaded,
   };
 };
 

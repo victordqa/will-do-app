@@ -24,6 +24,7 @@ function Register({
       setStatusMsg(error.msg);
     } else if (isAuthenticaded) {
       setStatusMsg("Registered! You are good to go.");
+      window.location.href = "http://localhost:3000/tasks";
     }
     clearErrorsAction();
   }, [error.msg, isAuthenticaded]);

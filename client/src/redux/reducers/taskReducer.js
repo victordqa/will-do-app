@@ -8,7 +8,6 @@ import {
 let initialState = {
   tasks: [],
   loading: false,
-  error: "",
 };
 
 export const taskReducer = (state = initialState, action) => {
@@ -18,7 +17,7 @@ export const taskReducer = (state = initialState, action) => {
     case LOADING_TASKS:
       return { ...state, loading: true };
     case LOADING_TASKS_SUCCSESS:
-      return { ...state, tasks: action.payload, error: "", loading: false };
+      return { ...state, tasks: action.payload, loading: false };
     case DELETE_TASK:
       let filteredTasks = state.tasks.filter(
         (task) => task._id !== action.payload
