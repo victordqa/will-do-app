@@ -22,7 +22,7 @@ router.post("/add", async (req, res) => {
 
     let isRegistred = await User.findOne({ email });
     if (isRegistred) {
-      return res.status(400).json({ msg: "User already registred" });
+      return res.status(400).json({ msg: "User already registered" });
     }
 
     //Hash and salt password

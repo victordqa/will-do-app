@@ -15,5 +15,5 @@ export const REGISTER_SUCCSESS = "REGISTER_SUCCSESS";
 export const REGISTER_FAILURE = "REGISTER_FAILURE";
 //handles a variety of error messages sent from server
 export const GET_ERRORS = "GET_ERRORS";
-export const CLEAR_ERRORS = "GET_ERRORS";
+export const CLEAR_ERRORS = "CLEAR_ERRORS";
 export const LOGOUT_SUCCSESS = "LOGOUT_SUCCSESS";

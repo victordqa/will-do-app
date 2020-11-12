@@ -8,7 +8,7 @@ import {
   REGISTER_FAILURE,
   LOGOUT_SUCCSESS,
 } from "../actions/types";
-import { getErrorsAction } from "./errorActions";
+import { clearErrorsAction, getErrorsAction } from "./errorActions";
 import axios from "axios";
 
 //This action keeps sending a token to the server to confirm authentication
@@ -23,8 +23,8 @@ export const loadUser = () => async (dispatch, getState) => {
     );
     dispatch(loadingUserSuccsessAction(res.data));
   } catch (e) {
-    console.error(e.message);
-    dispatch(getErrorsAction(e.response.data, e.response.status));
+    console.error(e);
+    dispatch(getErrorsAction(e.response.data.msg, e.response.status, "id"));
     dispatch(authErrorAction());
   }
 };
@@ -59,8 +59,35 @@ export const loadingUserSuccsessAction = (user) => {
   };
 };
 
-export const registerAction = ({ username, email, password }) => {
+export const logInSuccsessAction = (user) => {
   return {
-    type: LOADING_USER_SUCCSESS,
+    type: LOGIN_SUCCSESS,
+    payload: user,
   };
+};
+
+export const registerAction = ({ username, email, password }) => async (
+  dispatch,
+  getState
+) => {
+  dispatch(loadingUserAction());
+
+  let data = JSON.stringify({ username, email, password });
+  try {
+    let res = await axios.post(
+      "http://localhost:5000/api/user/add",
+      data,
+      tokenConfig(getState)
+    );
+    dispatch(logInSuccsessAction(res.data));
+  } catch (e) {
+    dispatch({ type: REGISTER_FAILURE });
+    dispatch(
+      getErrorsAction(
+        e.response.data.msg,
+        e.response.status,
+        "REGISTER_FAILURE"
+      )
+    );
+  }
 };

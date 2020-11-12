@@ -11,6 +11,6 @@ export const getErrorsAction = (msg, status, id = null) => {
   };
 };
 
-export const clearErrors = () => {
+export const clearErrorsAction = () => {
   return { type: CLEAR_ERRORS };
 };
