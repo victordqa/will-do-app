@@ -1,31 +1,31 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
-import { registerAction } from "../redux/actions/authActions";
+import { logInAction } from "../redux/actions/authActions";
 import { clearErrorsAction } from "../redux/actions/errorActions";
 
-function Login({ registerAction, clearErrorsAction, error, isAuthenticaded }) {
+function Login({ logInAction, clearErrorsAction, error, isAuthenticaded }) {
   // Local states
   const [user, setUser] = useState({
-    email: "",
-    password: "",
+    email: "asdasd@gmail",
+    password: "123",
   });
 
   //Display server messages
   const [statusMsg, setStatusMsg] = useState("");
   useEffect(() => {
-    if (!isAuthenticaded && error.id === "REGISTER_FAILURE") {
+    if (!isAuthenticaded && error.id === "LOGIN_FAILURE") {
       setStatusMsg(error.msg);
     } else if (isAuthenticaded) {
       setStatusMsg("Logged in! You are good to go.");
     }
     clearErrorsAction();
   }, [error.msg, isAuthenticaded]);
-  function registerHandler(user) {
+  function logInHandler(user) {
     //clear previous erros
     clearErrorsAction();
 
-    registerAction(user);
+    logInAction(user);
   }
   function onSubmitHandler(event) {
     event.preventDefault();
@@ -56,7 +56,7 @@ function Login({ registerAction, clearErrorsAction, error, isAuthenticaded }) {
         ></input>
         <br></br>
         <hr></hr>
-        <button onClick={(e) => registerHandler(user)}>Register</button>
+        <button onClick={(e) => logInHandler(user)}>Log In</button>
         <p> {statusMsg} </p>
       </form>
     </div>
@@ -69,8 +69,8 @@ const mapStateToProps = (store) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    registerAction: ({ username, email, password }) =>
-      dispatch(registerAction({ username, email, password })),
+    logInAction: ({ username, email, password }) =>
+      dispatch(logInAction({ username, email, password })),
     clearErrorsAction: () => dispatch(clearErrorsAction()),
   };
 };

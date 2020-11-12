@@ -91,3 +91,25 @@ export const registerAction = ({ username, email, password }) => async (
     );
   }
 };
+
+export const logInAction = ({ email, password }) => async (
+  dispatch,
+  getState
+) => {
+  dispatch(loadingUserAction());
+
+  let data = JSON.stringify({ email, password });
+  try {
+    let res = await axios.post(
+      "http://localhost:5000/api/auth",
+      data,
+      tokenConfig(getState)
+    );
+    dispatch(logInSuccsessAction(res.data));
+  } catch (e) {
+    dispatch({ type: LOGIN_FAILURE });
+    dispatch(
+      getErrorsAction(e.response.data.msg, e.response.status, "LOGIN_FAILURE")
+    );
+  }
+};
