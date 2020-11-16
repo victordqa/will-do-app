@@ -9,8 +9,8 @@ const router = express.Router();
 //* Access: Private
 router.post("/add", auth, async (req, res) => {
   try {
-    let { userId, description, importance } = req.body;
-    console.log("entered route");
+    let { description, importance } = req.body;
+    let userId = req.user._id;
     //Validations
     if (!description) {
       res.status(400).json({ msg: "Please enter the description" });
@@ -20,6 +20,22 @@ router.post("/add", auth, async (req, res) => {
     res.json({ msg: "Task added!" });
   } catch (e) {
     console.error(e);
+  }
+});
+
+//* Route:  DELETE /api/task/delete
+//* Descr:  Delete a task by ID
+//* Access: Private
+
+router.delete("/delete", auth, async (req, res) => {
+  let taskId = req.body.taskId;
+  console.log("---------- taskId from server", taskId);
+  try {
+    await Task.findByIdAndDelete(taskId);
+    res.json({ msg: "Task deleted" });
+  } catch (e) {
+    console.log(e.message);
+    res.status(500).json({ msg: e.message });
   }
 });
 

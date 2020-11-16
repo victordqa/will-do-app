@@ -3,7 +3,9 @@ require("dotenv").config();
 
 function auth(req, res, next) {
   //Validate token
+  console.log("entered auth");
   let token = req.header("x-auth-token");
+  console.log(token);
   if (!token) {
     return res.status(401).json({ msg: "Please register or log in" });
   }
@@ -14,7 +16,7 @@ function auth(req, res, next) {
     req.user = decoded;
     next();
   } catch (e) {
-    console.error(error.message);
+    console.error(e.message);
     res.status(400).json({ msg: "Invalid token" });
   }
 }

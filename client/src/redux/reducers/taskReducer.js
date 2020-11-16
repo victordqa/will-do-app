@@ -1,5 +1,5 @@
 import {
-  ADD_TASK,
+  ADD_TASK_SUCCSESS,
   DELETE_TASK,
   LOADING_TASKS,
   LOADING_TASKS_SUCCSESS,
@@ -12,8 +12,11 @@ let initialState = {
 
 export const taskReducer = (state = initialState, action) => {
   switch (action.type) {
-    case ADD_TASK:
-      return { ...state, tasks: [...state.tasks, action.payload] };
+    case ADD_TASK_SUCCSESS:
+      return {
+        ...state,
+        loading: false,
+      };
     case LOADING_TASKS:
       return { ...state, loading: true };
     case LOADING_TASKS_SUCCSESS:

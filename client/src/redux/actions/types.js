@@ -1,8 +1,8 @@
-export const ADD_TASK = "ADD_TASK";
+export const ADD_TASK_SUCCSESS = "ADD_TASK_SUCCSESS";
 export const DELETE_TASK = "DELETE_TASK";
 export const LOADING_TASKS = "LOADING_TASKS";
 // updtate state with users from database
-export const LOADING_TASKS_SUCCSESS = "GET_TASK_SUCCSESS";
+export const LOADING_TASKS_SUCCSESS = "LOADING_TASKS_SUCCSESS";
 //change state to loading
 export const LOADING_USER = "LOADING_USER";
 export const LOADING_USER_SUCCSESS = "LOADING_USER_SUCCSESS";

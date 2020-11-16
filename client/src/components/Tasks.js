@@ -24,11 +24,9 @@ function Tasks({
   isAuthenticaded,
 }) {
   // Get tasks from database
-  useEffect(() => {
-    getTasksAction();
-  }, []);
-
-  console.log("-----------------------", tasks);
+  // useEffect(() => {
+  //   getTasksAction();
+  // }, []);
 
   const [newTask, setNewTask] = useState({
     importance: 0,
@@ -40,8 +38,6 @@ function Tasks({
   }
 
   function addTaskHandler(newTask) {
-    let _id = Math.random();
-    newTask._id = _id;
     addTaskAction(newTask);
   }
 
@@ -52,12 +48,13 @@ function Tasks({
     setNewTask({ ...newTask, [name]: value });
   }
   //Create task cards
+  console.log("-------------- tasks before map", tasks);
   let mappedTasks = tasks.map((task) => (
     <TaskContainer key={task._id}>
-      <p>
+      <div>
         <button onClick={() => deleteTaskHandler(task._id)}>DELETE</button>{" "}
         {task.importance}-{task.description}
-      </p>
+      </div>
     </TaskContainer>
   ));
 
@@ -89,7 +86,7 @@ function Tasks({
       <button onClick={() => addTaskHandler(newTask)}>
         <b>Add Task!</b>
       </button>
-      <p>{tasks.length === 0 ? "No tasks :)" : mappedTasks}</p>
+      <div>{tasks.length === 0 ? "No tasks :)" : mappedTasks}</div>
     </div>
   );
 }

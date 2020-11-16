@@ -8,7 +8,8 @@ import {
   REGISTER_FAILURE,
   LOGOUT_SUCCSESS,
 } from "../actions/types";
-import { clearErrorsAction, getErrorsAction } from "./errorActions";
+import { getErrorsAction } from "./errorActions";
+import { getTasksAction } from "./taskActions";
 import axios from "axios";
 
 //This action keeps sending a token to the server to confirm authentication
@@ -22,6 +23,7 @@ export const loadUser = () => async (dispatch, getState) => {
       tokenConfig(getState)
     );
     dispatch(loadingUserSuccsessAction(res.data));
+    dispatch(getTasksAction());
   } catch (e) {
     console.error(e);
     dispatch(getErrorsAction(e.response.data.msg, e.response.status, "id"));
@@ -40,7 +42,6 @@ export const tokenConfig = (getState) => {
   if (token) {
     config.headers["x-auth-token"] = token;
   }
-
   return config;
 };
 
