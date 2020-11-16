@@ -114,3 +114,7 @@ export const logInAction = ({ email, password }) => async (
     );
   }
 };
+
+export const logOutSuccsessAction = () => {
+  return { type: LOGOUT_SUCCSESS };
+};

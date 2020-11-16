@@ -17,10 +17,7 @@ function Login({ logInAction, clearErrorsAction, error, isAuthenticaded }) {
       setStatusMsg(error.msg);
     } else if (isAuthenticaded) {
       setStatusMsg("Logged in! You are good to go.");
-      setTimeout(
-        () => (window.location.href = "http://localhost:3000/tasks"),
-        1500
-      );
+      window.location.href = "http://localhost:3000/tasks";
     }
     clearErrorsAction();
   }, [error.msg, isAuthenticaded]);

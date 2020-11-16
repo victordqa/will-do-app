@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { logOutSuccsessAction } from "../redux/actions/authActions";
 
 const NavContainer = styled.div`
   display: flex;
@@ -30,6 +32,16 @@ const LinksContainer = styled.div`
   margin-right: 1rem;
 `;
 const StyledLink = styled(Link)`
+  display: ${(props) => (props.isAuthenticaded ? "flex" : "none")};
+  text-decoration: none;
+  margin-right: 1rem;
+  &:visited {
+    color: inherit;
+  }
+`;
+const LogOutStyledLink = styled(Link)`
+  ${(props) => console.log("is auth: ", props.isAuthenticaded)};
+  display: ${(props) => (props.isAuthenticaded ? "flex" : "none")};
   text-decoration: none;
   margin-right: 1rem;
   &:visited {
@@ -37,18 +49,27 @@ const StyledLink = styled(Link)`
   }
 `;
 
-function Navbar() {
+function Navbar({ isAuthenticaded, logOutAction }) {
+  console.log("is auth from redux ", isAuthenticaded);
+  const logOutHandler = () => {
+    logOutAction();
+  };
   return (
     <>
       <NavContainer>
-        <StyledLink to="/">
+        <StyledLink isAuthenticaded={true} to="/">
           <LogoContainer>✅WILL DO!</LogoContainer>
         </StyledLink>
         <LinksContainer>
-          <StyledLink to="/login">Log In</StyledLink>
-          <StyledLink to="/register">
+          <StyledLink isAuthenticaded={!isAuthenticaded} to="/login">
+            Log In
+          </StyledLink>
+          <StyledLink isAuthenticaded={!isAuthenticaded} to="/register">
             <b>Register</b>
           </StyledLink>
+          <LogOutStyledLink isAuthenticaded={isAuthenticaded} to="/">
+            <b onClick={() => logOutHandler()}>Log out</b>
+          </LogOutStyledLink>
         </LinksContainer>
       </NavContainer>
       <Spacer></Spacer>
@@ -56,4 +77,12 @@ function Navbar() {
   );
 }
 
-export default Navbar;
+let mapStateToProps = (store) => {
+  return { isAuthenticaded: store.auth.isAuthenticaded };
+};
+
+let mapDispatchToProps = (dispatch) => {
+  return { logOutAction: () => dispatch(logOutSuccsessAction()) };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Navbar);
