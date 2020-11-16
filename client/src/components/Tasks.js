@@ -48,7 +48,7 @@ function Tasks({
     setNewTask({ ...newTask, [name]: value });
   }
   //Create task cards
-  console.log("-------------- tasks before map", tasks);
+
   let mappedTasks = tasks.map((task) => (
     <TaskContainer key={task._id}>
       <div>

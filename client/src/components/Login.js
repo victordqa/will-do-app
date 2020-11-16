@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
 import { connect } from "react-redux";
 import { logInAction } from "../redux/actions/authActions";
 import { clearErrorsAction } from "../redux/actions/errorActions";
@@ -18,10 +17,14 @@ function Login({ logInAction, clearErrorsAction, error, isAuthenticaded }) {
       setStatusMsg(error.msg);
     } else if (isAuthenticaded) {
       setStatusMsg("Logged in! You are good to go.");
-      window.location.href = "http://localhost:3000/tasks";
+      setTimeout(
+        () => (window.location.href = "http://localhost:3000/tasks"),
+        1500
+      );
     }
     clearErrorsAction();
   }, [error.msg, isAuthenticaded]);
+
   function logInHandler(user) {
     //clear previous erros
     clearErrorsAction();
