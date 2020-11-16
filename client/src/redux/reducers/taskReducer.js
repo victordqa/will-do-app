@@ -1,6 +1,6 @@
 import {
   ADD_TASK_SUCCSESS,
-  DELETE_TASK,
+  DELETE_TASK_SUCCSESS,
   LOADING_TASKS,
   LOADING_TASKS_SUCCSESS,
 } from "../actions/types";
@@ -13,6 +13,7 @@ let initialState = {
 export const taskReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_TASK_SUCCSESS:
+    case DELETE_TASK_SUCCSESS:
       return {
         ...state,
         loading: false,
@@ -21,11 +22,6 @@ export const taskReducer = (state = initialState, action) => {
       return { ...state, loading: true };
     case LOADING_TASKS_SUCCSESS:
       return { ...state, tasks: action.payload, loading: false };
-    case DELETE_TASK:
-      let filteredTasks = state.tasks.filter(
-        (task) => task._id !== action.payload
-      );
-      return { ...state, tasks: filteredTasks };
     default:
       return state;
   }

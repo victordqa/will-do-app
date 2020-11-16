@@ -1,5 +1,5 @@
 export const ADD_TASK_SUCCSESS = "ADD_TASK_SUCCSESS";
-export const DELETE_TASK = "DELETE_TASK";
+export const DELETE_TASK_SUCCSESS = "DELETE_TASK_SUCCSESS";
 export const LOADING_TASKS = "LOADING_TASKS";
 // updtate state with users from database
 export const LOADING_TASKS_SUCCSESS = "LOADING_TASKS_SUCCSESS";

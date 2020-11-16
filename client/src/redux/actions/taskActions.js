@@ -1,6 +1,6 @@
 import {
   ADD_TASK_SUCCSESS,
-  DELETE_TASK,
+  DELETE_TASK_SUCCSESS,
   LOADING_TASKS_SUCCSESS,
   LOADING_TASKS,
 } from "./types";
@@ -31,7 +31,6 @@ export const deleteTaskAction = (taskId) => async (dispatch, getState) => {
   console.log("data from  delete action: ", data);
   let config = tokenConfig(getState);
   console.log("consfig", config);
-
   try {
     let res = await axios({
       method: "delete",
@@ -39,7 +38,7 @@ export const deleteTaskAction = (taskId) => async (dispatch, getState) => {
       data: data,
       ...config,
     });
-    console.log(res);
+    dispatch(deleteTaskSuccsessAction());
     dispatch(getTasksAction());
   } catch (e) {
     console.error(e.message);
@@ -83,4 +82,8 @@ export const loadingTasksSuccsessAction = (data) => {
 
 export const addTaskSuccsessAction = () => {
   return { type: ADD_TASK_SUCCSESS };
+};
+
+export const deleteTaskSuccsessAction = () => {
+  return { type: DELETE_TASK_SUCCSESS };
 };
