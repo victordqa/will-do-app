@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
 import { connect } from "react-redux";
 import { registerAction } from "../redux/actions/authActions";
 import { clearErrorsAction } from "../redux/actions/errorActions";

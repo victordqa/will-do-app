@@ -80,7 +80,7 @@ export const registerAction = ({ username, email, password }) => async (
       data,
       tokenConfig(getState)
     );
-    dispatch(logInSuccsessAction(res.data));
+    dispatch(registerSuccsessAction(res.data));
   } catch (e) {
     dispatch({ type: REGISTER_FAILURE });
     dispatch(
@@ -117,4 +117,8 @@ export const logInAction = ({ email, password }) => async (
 
 export const logOutSuccsessAction = () => {
   return { type: LOGOUT_SUCCSESS };
+};
+
+export const registerSuccsessAction = (data) => {
+  return { type: REGISTER_SUCCSESS, payload: data };
 };
