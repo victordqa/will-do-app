@@ -4,12 +4,10 @@ import { connect } from "react-redux";
 import { registerAction } from "../redux/actions/authActions";
 import { clearErrorsAction } from "../redux/actions/errorActions";
 
-function Register({
-  registerAction,
-  clearErrorsAction,
-  error,
-  isAuthenticaded,
-}) {
+function Register(props) {
+  let { registerAction, clearErrorsAction, error, isAuth } = props;
+  let errorId = error.id;
+  let errorMsg = error.msg;
   // Local states
   const [user, setUser] = useState({
     username: "",
@@ -20,14 +18,14 @@ function Register({
   //Display server messages
   const [statusMsg, setStatusMsg] = useState("");
   useEffect(() => {
-    if (!isAuthenticaded && error.id === "REGISTER_FAILURE") {
-      setStatusMsg(error.msg);
-    } else if (isAuthenticaded) {
+    if (!isAuth && errorId === "REGISTER_FAILURE") {
+      setStatusMsg(errorMsg);
+    } else if (isAuth) {
       setStatusMsg("Registered! You are good to go.");
       window.location.href = "http://localhost:3000/tasks";
     }
     clearErrorsAction();
-  }, [error.msg, isAuthenticaded]);
+  }, [errorMsg, errorId, isAuth, clearErrorsAction]);
   function registerHandler(user) {
     //clear previous erros
     clearErrorsAction();
@@ -79,7 +77,7 @@ function Register({
 }
 
 const mapStateToProps = (store) => {
-  return { error: store.error, isAuthenticaded: store.auth.isAuthenticaded };
+  return { error: store.error, isAuth: store.auth.isAuth };
 };
 
 const mapDispatchToProps = (dispatch) => {

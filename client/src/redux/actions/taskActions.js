@@ -26,11 +26,10 @@ export const getTasksAction = () => async (dispatch, getState) => {
 };
 export const deleteTaskAction = (taskId) => async (dispatch, getState) => {
   dispatch(loadingTasksAction());
-  console.log("task id from  delete action", taskId);
+
   let data = { taskId };
-  console.log("data from  delete action: ", data);
   let config = tokenConfig(getState);
-  console.log("consfig", config);
+
   try {
     let res = await axios({
       method: "delete",

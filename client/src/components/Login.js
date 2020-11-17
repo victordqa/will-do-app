@@ -3,7 +3,10 @@ import { connect } from "react-redux";
 import { logInAction } from "../redux/actions/authActions";
 import { clearErrorsAction } from "../redux/actions/errorActions";
 
-function Login({ logInAction, clearErrorsAction, error, isAuthenticaded }) {
+function Login(props) {
+  let { logInAction, clearErrorsAction, error, isAuth } = props;
+  let errorId = error.id;
+  let errorMsg = error.msg;
   // Local states
   const [user, setUser] = useState({
     email: "victor@gmail.com",
@@ -13,14 +16,15 @@ function Login({ logInAction, clearErrorsAction, error, isAuthenticaded }) {
   //Display server messages
   const [statusMsg, setStatusMsg] = useState("");
   useEffect(() => {
-    if (!isAuthenticaded && error.id === "LOGIN_FAILURE") {
-      setStatusMsg(error.msg);
-    } else if (isAuthenticaded) {
+    console.log("use effect triggered");
+    if (!isAuth && errorId === "LOGIN_FAILURE") {
+      setStatusMsg(errorMsg);
+    } else if (isAuth) {
       setStatusMsg("Logged in! You are good to go.");
       window.location.href = "http://localhost:3000/tasks";
     }
     clearErrorsAction();
-  }, [error.msg, isAuthenticaded]);
+  }, [isAuth, errorId, errorMsg, clearErrorsAction]);
 
   function logInHandler(user) {
     //clear previous erros
@@ -65,7 +69,7 @@ function Login({ logInAction, clearErrorsAction, error, isAuthenticaded }) {
 }
 
 const mapStateToProps = (store) => {
-  return { error: store.error, isAuthenticaded: store.auth.isAuthenticaded };
+  return { error: store.error, isAuth: store.auth.isAuth };
 };
 
 const mapDispatchToProps = (dispatch) => {

@@ -32,7 +32,7 @@ const LinksContainer = styled.div`
   margin-right: 1rem;
 `;
 const StyledLink = styled(Link)`
-  display: ${(props) => (props.isAuthenticaded ? "flex" : "none")};
+  display: ${(props) => (props.$isAuth ? "flex" : "none")};
   text-decoration: none;
   margin-right: 1rem;
   &:visited {
@@ -40,8 +40,7 @@ const StyledLink = styled(Link)`
   }
 `;
 const LogOutStyledLink = styled(Link)`
-  ${(props) => console.log("is auth: ", props.isAuthenticaded)};
-  display: ${(props) => (props.isAuthenticaded ? "flex" : "none")};
+  display: ${(props) => (props.$isAuth ? "flex" : "none")};
   text-decoration: none;
   margin-right: 1rem;
   &:visited {
@@ -49,25 +48,25 @@ const LogOutStyledLink = styled(Link)`
   }
 `;
 
-function Navbar({ isAuthenticaded, logOutAction }) {
-  console.log("is auth from redux ", isAuthenticaded);
+function Navbar(props) {
+  let { isAuth, logOutAction } = props;
   const logOutHandler = () => {
     logOutAction();
   };
   return (
     <>
       <NavContainer>
-        <StyledLink isAuthenticaded={true} to="/">
+        <StyledLink $isAuth={true} to="/">
           <LogoContainer>✅WILL DO!</LogoContainer>
         </StyledLink>
         <LinksContainer>
-          <StyledLink isAuthenticaded={!isAuthenticaded} to="/login">
+          <StyledLink $isAuth={!isAuth} to="/login">
             Log In
           </StyledLink>
-          <StyledLink isAuthenticaded={!isAuthenticaded} to="/register">
+          <StyledLink $isAuth={!isAuth} to="/register">
             <b>Register</b>
           </StyledLink>
-          <LogOutStyledLink isAuthenticaded={isAuthenticaded} to="/">
+          <LogOutStyledLink $isAuth={isAuth} to="/">
             <b onClick={() => logOutHandler()}>Log out</b>
           </LogOutStyledLink>
         </LinksContainer>
@@ -78,7 +77,7 @@ function Navbar({ isAuthenticaded, logOutAction }) {
 }
 
 let mapStateToProps = (store) => {
-  return { isAuthenticaded: store.auth.isAuthenticaded };
+  return { isAuth: store.auth.isAuth };
 };
 
 let mapDispatchToProps = (dispatch) => {

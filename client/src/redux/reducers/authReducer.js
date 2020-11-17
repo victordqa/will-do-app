@@ -11,7 +11,7 @@ import {
 
 const initialState = {
   token: localStorage.getItem("token"),
-  isAuthenticaded: null,
+  isAuth: null,
   isLoading: null,
   user: null,
 };
@@ -26,7 +26,7 @@ export const authReducer = (state = initialState, action) => {
     case LOADING_USER_SUCCSESS:
       return {
         ...state,
-        isAuthenticaded: true,
+        isAuth: true,
         isLoading: false,
         user: action.payload,
       };
@@ -36,7 +36,7 @@ export const authReducer = (state = initialState, action) => {
       return {
         ...state,
         ...action.payload, // Add user and token retrieved from server
-        isAuthenticaded: true,
+        isAuth: true,
         isLoading: false,
       };
     case AUTH_ERROR:
@@ -47,7 +47,7 @@ export const authReducer = (state = initialState, action) => {
       return {
         ...state, //test if cloning the state is necessary
         token: null,
-        isAuthenticaded: false,
+        isAuth: false,
         isLoading: false,
         user: null,
       };
