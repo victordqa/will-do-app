@@ -8,7 +8,7 @@ const NavContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  background-color: rgba(96, 104, 108, 0.85);
+  background-color: rgba(61, 66, 69, 0.85);
   position: fixed;
   top: 0;
   left: 0;
@@ -17,7 +17,7 @@ const NavContainer = styled.div`
 
 const LogoContainer = styled.div`
   font-weight: bold;
-  border: 2px solid whitesmoke;
+  border: 2px solid rgba(186, 0, 84, 1);
   margin: 0.4rem;
   padding: 0.1rem;
 `;
@@ -38,7 +38,9 @@ const StyledLink = styled(Link)`
   &:visited {
     color: inherit;
   }
-  &:link { color: inherit; }
+  &:link {
+    color: inherit;
+  }
 `;
 const LogOutStyledLink = styled(Link)`
   display: ${(props) => (props.$isAuth ? "flex" : "none")};
@@ -46,6 +48,23 @@ const LogOutStyledLink = styled(Link)`
   margin-right: 1rem;
   &:visited {
     color: inherit;
+  }
+`;
+
+const RegisterContainer = styled.div`
+  background-color: rgba(186, 0, 84, 0.8);
+  padding: 0.3rem 1rem;
+  border-radius: 3em;
+  transition: all 0.3s ease-in-out;
+  &:hover {
+    background-color: rgba(186, 0, 84, 1);
+  }
+`;
+const LogInContainer = styled.div`
+  border-bottom: 1px solid rgba(61, 66, 69, 0.85);
+  transition: all 0.3s ease-in-out;
+  &:hover {
+    border-bottom: 1px solid rgba(186, 0, 84, 1);
   }
 `;
 
@@ -62,10 +81,10 @@ function Navbar(props) {
         </StyledLink>
         <LinksContainer>
           <StyledLink $isAuth={!isAuth} to="/login">
-            Log In
+            <LogInContainer> Log In</LogInContainer>
           </StyledLink>
           <StyledLink $isAuth={!isAuth} to="/register">
-            <b>Register</b>
+            <RegisterContainer>Register</RegisterContainer>
           </StyledLink>
           <LogOutStyledLink $isAuth={isAuth} to="/">
             <b onClick={() => logOutHandler()}>Log out</b>

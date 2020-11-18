@@ -6,7 +6,8 @@ const FooterContainer = styled.div`
   flex-direction: row;
   justify-content: center;
   width: 100vw;
-  background-color: rgba(96, 104, 108, 0.85);
+  background-color: rgba(61, 66, 69, 0.85);
+
 `;
 
 function Footer() {
