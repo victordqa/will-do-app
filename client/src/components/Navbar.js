@@ -38,6 +38,7 @@ const StyledLink = styled(Link)`
   &:visited {
     color: inherit;
   }
+  &:link { color: inherit; }
 `;
 const LogOutStyledLink = styled(Link)`
   display: ${(props) => (props.$isAuth ? "flex" : "none")};
