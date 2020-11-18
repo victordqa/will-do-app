@@ -17,7 +17,7 @@ const NavContainer = styled.div`
 
 const LogoContainer = styled.div`
   font-weight: bold;
-  border: 2px solid rgba(186, 0, 84, 1);
+  border: 2px solid rgba(24, 26, 27, 0.8);
   margin: 0.4rem;
   padding: 0.1rem;
 `;

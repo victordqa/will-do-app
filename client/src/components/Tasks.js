@@ -36,7 +36,7 @@ function Tasks({ addTaskAction, deleteTaskAction, tasks, user, isAuth }) {
 
   function deleteTaskHandler(taskId) {
     setCurrentTask(taskId);
-    setTimeout(() => deleteTaskAction(taskId), 4000);
+    setTimeout(() => deleteTaskAction(taskId), 2200);
   }
 
   function addTaskHandler(newTask) {
