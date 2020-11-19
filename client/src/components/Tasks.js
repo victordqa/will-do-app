@@ -13,18 +13,46 @@ const taskAnimationHandler = (props) => {
   let rotation = 300 + Math.random() * 2000;
   let speed = 0.7 + Math.random() * 1.5;
   if (props.id === props.current)
-    return ` position: absolute; border: 2px solid red; transform: translate(${horizontalDisp}vw, ${verticalDisp}vh) rotate(${rotation}deg);   transition:all ${speed}s ease-in;`;
+    return ` position: absolute; transform: translate(${horizontalDisp}vw, ${verticalDisp}vh) rotate(${rotation}deg);   transition:all ${speed}s ease-in;`;
 };
 
 const TaskContainer = styled.div`
-  border: 1px solid white;
-  flex-direction: column;
+  margin-top: 1rem;
+  border: 1px solid rgba(61, 66, 69, 0.85);
+  padding: 1rem;
+  border-radius: 0.5em;
+  display: flex;
+  flex-flow: wrap;
   justify-content: center;
   align-items: center;
   max-width: 80%;
   ${(props) => taskAnimationHandler(props)};
 `;
 
+const DoneButton = styled.button`
+  background-color: rgba(186, 0, 84, 0.8);
+  border-radius: 3em;
+  height: 3.7em;
+  color: inherit;
+  font-weight: 600;
+  border: none;
+  transition: all 0.3s ease-in-out;
+  &:hover {
+    background-color: rgba(186, 0, 84, 1);
+  }
+`;
+
+const ImportanceContainer = styled.div`
+  border-radius: 0.5em;
+  border: 1px solid rgba(61, 66, 69, 0.85);
+  color: inherit;
+  font-weight: 600;
+  font-size: 2rem;
+  transition: all 0.5s ease-out;
+  &:hover {
+    background-color: rgba(186, 0, 84, 1);
+  }
+`;
 function Tasks({ addTaskAction, deleteTaskAction, tasks, user, isAuth }) {
   const [newTask, setNewTask] = useState({
     importance: 0,
@@ -33,6 +61,11 @@ function Tasks({ addTaskAction, deleteTaskAction, tasks, user, isAuth }) {
 
   // Local state for identifying last deleted task to perform animation before deletion
   const [currentTask, setCurrentTask] = useState("");
+
+  function deleteTaskHandler(taskId) {
+    setCurrentTask(taskId);
+    setTimeout(() => deleteTaskAction(taskId), 2200);
+  }
 
   function deleteTaskHandler(taskId) {
     setCurrentTask(taskId);
@@ -53,10 +86,9 @@ function Tasks({ addTaskAction, deleteTaskAction, tasks, user, isAuth }) {
 
   let mappedTasks = tasks.map((task) => (
     <TaskContainer key={task._id} id={task._id} current={currentTask}>
-      <div>
-        <button onClick={() => deleteTaskHandler(task._id)}>DELETE</button>{" "}
-        {task.importance}-{task.description}
-      </div>
+      <DoneButton onClick={() => deleteTaskHandler(task._id)}>Done!</DoneButton>{" "}
+      <ImportanceContainer>{task.importance}</ImportanceContainer>-
+      {task.description}
     </TaskContainer>
   ));
 

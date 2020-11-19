@@ -4,8 +4,8 @@ import styled from "styled-components";
 import { registerAction } from "../redux/actions/authActions";
 import { clearErrorsAction } from "../redux/actions/errorActions";
 
-const LogInContainer = styled.div`
-  margin-top: 3rem;
+const RegisterContainer = styled.div`
+  margin-top: 1.5rem;
   border: 1px solid rgba(61, 66, 69, 0.85);
   padding: 2rem;
   border-radius: 0.5em;
@@ -37,7 +37,7 @@ const InputContainer = styled.input`
   display: flex;
 `;
 
-const LogInButton = styled.button`
+const RegisterButton = styled.button`
   background-color: rgba(186, 0, 84, 0.8);
   padding: 0.3rem 1rem;
   border-radius: 3em;
@@ -89,35 +89,49 @@ function Register(props) {
 
   return (
     <div>
-      <form onSubmit={(event) => onSubmitHandler(event)}>
-        <label htmlFor="username"> Username </label>
-        <input
-          type="text"
-          name="username"
-          value={user.username}
-          onChange={(event) => onChangeHandler(event)}
-        ></input>
-        <br />
-        <label htmlFor="mail"> Email </label>
-        <input
-          type="email"
-          name="email"
-          value={user.email}
-          onChange={(event) => onChangeHandler(event)}
-        ></input>
-        <br />
-        <label htmlFor="password"> Password </label>
-        <input
-          type="password"
-          name="password"
-          value={user.password}
-          onChange={(event) => onChangeHandler(event)}
-        ></input>
-        <br></br>
-        <hr></hr>
-        <button onClick={(e) => registerHandler(user)}>Register</button>
-        <p> {statusMsg} </p>
-      </form>
+      <RegisterContainer>
+        <h4 style={{ margin: "0.5rem" }}>
+          Welcome! Only three simple steps to begin. <br />
+          :)
+        </h4>
+        <form onSubmit={(event) => onSubmitHandler(event)}>
+          <FieldContainer>
+            <label htmlFor="Name"> Name </label>
+            <InputContainer
+              type="text"
+              name="username"
+              placeholder="Ex: John Doe"
+              value={user.username}
+              onChange={(event) => onChangeHandler(event)}
+            ></InputContainer>
+          </FieldContainer>
+          <FieldContainer>
+            <label htmlFor="mail"> Email: </label>
+            <InputContainer
+              type="email"
+              name="email"
+              placeholder="example@email.com"
+              value={user.email}
+              onChange={(event) => onChangeHandler(event)}
+            ></InputContainer>
+          </FieldContainer>
+          <FieldContainer>
+            <label htmlFor="password"> Password: </label>
+            <InputContainer
+              type="password"
+              name="password"
+              value={user.password}
+              onChange={(event) => onChangeHandler(event)}
+            ></InputContainer>
+          </FieldContainer>
+          <FieldContainer>
+            <RegisterButton onClick={() => registerHandler(user)}>
+              Register
+            </RegisterButton>
+            <p> {statusMsg} </p>
+          </FieldContainer>
+        </form>
+      </RegisterContainer>
     </div>
   );
 }
