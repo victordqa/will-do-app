@@ -12,24 +12,50 @@ const taskAnimationHandler = (props) => {
   let verticalDisp = (-60 + Math.random() * -45) * 1.2;
   let rotation = 300 + Math.random() * 2000;
   let speed = 0.7 + Math.random() * 1.5;
-  if (props.id === props.current)
+  if (props.id === props.animate)
     return ` position: absolute; transform: translate(${horizontalDisp}vw, ${verticalDisp}vh) rotate(${rotation}deg);   transition:all ${speed}s ease-in;`;
 };
 
 const TaskContainer = styled.div`
+  ${(props) => {
+    console.log("id: ", props.id);
+    console.log("hovered: ", props.hoovered);
+    console.log("animate: ", props.animate);
+  }}
   margin-top: 1rem;
   border: 1px solid rgba(61, 66, 69, 0.85);
   padding: 1rem;
   border-radius: 0.5em;
   display: flex;
   flex-flow: wrap;
+
+  align-items: center;
+  width: 100%;
+  ${(props) =>
+    props.id === props.hoovered ? taskAnimationHandler(props) : ""};
+`;
+const TaskImportanceContainer = styled.div`
+  border: 1px solid rgba(61, 66, 69, 0.85);
+  padding: 1rem;
+  border-radius: 0.5em;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  max-width: 80%;
-  ${(props) => taskAnimationHandler(props)};
+  height: 100%;
+  font-size: 2.5em;
+  /* ${(props) =>
+    props.id === props.hooveredTask ? taskAnimationHandler(props) : ""}; */
 `;
 
 const DoneButton = styled.button`
+  ${(props) =>
+    props.id === props.hooveredTask
+      ? console.log(
+          "doen button rendered because of task hoover: ",
+          props.animate
+        )
+      : ""}
   background-color: rgba(186, 0, 84, 0.8);
   border-radius: 3em;
   height: 3.7em;
@@ -42,17 +68,6 @@ const DoneButton = styled.button`
   }
 `;
 
-const ImportanceContainer = styled.div`
-  border-radius: 0.5em;
-  border: 1px solid rgba(61, 66, 69, 0.85);
-  color: inherit;
-  font-weight: 600;
-  font-size: 2rem;
-  transition: all 0.5s ease-out;
-  &:hover {
-    background-color: rgba(186, 0, 84, 1);
-  }
-`;
 function Tasks({ addTaskAction, deleteTaskAction, tasks, user, isAuth }) {
   const [newTask, setNewTask] = useState({
     importance: 0,
@@ -60,17 +75,20 @@ function Tasks({ addTaskAction, deleteTaskAction, tasks, user, isAuth }) {
   });
 
   // Local state for identifying last deleted task to perform animation before deletion
-  const [currentTask, setCurrentTask] = useState("");
+  const [animateTask, setAnimateTask] = useState("");
 
-  function deleteTaskHandler(taskId) {
-    setCurrentTask(taskId);
+  // Local state for identifying a hoovered card and display extra info
+  const [hooveredTask, setHooveredTask] = useState("");
+
+  function deleteAndAnimateTaskHandler(taskId) {
+    setAnimateTask(taskId);
     setTimeout(() => deleteTaskAction(taskId), 2200);
   }
 
-  function deleteTaskHandler(taskId) {
-    setCurrentTask(taskId);
-    setTimeout(() => deleteTaskAction(taskId), 2200);
-  }
+  // function deleteAndAnimateTaskHandler(taskId) {
+  //   setAnimateTask(taskId);
+  //   setTimeout(() => deleteTaskAction(taskId), 2200);
+  // }
 
   function addTaskHandler(newTask) {
     addTaskAction(newTask);
@@ -85,10 +103,24 @@ function Tasks({ addTaskAction, deleteTaskAction, tasks, user, isAuth }) {
   //Create task cards
 
   let mappedTasks = tasks.map((task) => (
-    <TaskContainer key={task._id} id={task._id} current={currentTask}>
-      <DoneButton onClick={() => deleteTaskHandler(task._id)}>Done!</DoneButton>{" "}
-      <ImportanceContainer>{task.importance}</ImportanceContainer>-
-      {task.description}
+    <TaskContainer
+      key={task._id}
+      id={task._id}
+      hoovered={hooveredTask}
+      onMouseOver={(e) => console.log(task._id)}
+      onMouseOut={() => console.log(task._id)}
+    >
+      <DoneButton
+        animate={animateTask}
+        onClick={() => deleteAndAnimateTaskHandler(task._id)}
+      >
+        Done!
+      </DoneButton>
+      <TaskImportanceContainer>
+        <div style={{ fontSize: "1rem" }}>Importance</div>
+        {task.importance}
+      </TaskImportanceContainer>
+      -{task.description}
     </TaskContainer>
   ));
 
