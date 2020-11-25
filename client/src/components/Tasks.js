@@ -29,7 +29,7 @@ const TaskContainer = styled.div`
   ${(props) => (props.animate === true ? taskAnimationHandler(props) : "")};
 `;
 
-const TaskDescriptionContainer = styled.textarea`
+const TaskDescriptionContainer = styled.div`
   margin-top: 1rem;
   color: inherit;
   height: auto;
@@ -41,7 +41,8 @@ const TaskDescriptionContainer = styled.textarea`
   display: flex;
   flex-direction: column;
   width: 50%;
-  overflow-y: auto;
+  overflow: auto;
+  word-break: keep-all;
   flex: 1;
   resize: none;
 `;
@@ -140,7 +141,7 @@ function Tasks({ addTaskAction, deleteTaskAction, tasks, user, isAuth }) {
 
   // Local state to control toggle for task creation
 
-  const [toggle, setToggle] = useState();
+  const [toggle, setToggle] = useState(true);
 
   useEffect(() => {
     let tasksArray = tasks.map((task) => {
@@ -148,6 +149,11 @@ function Tasks({ addTaskAction, deleteTaskAction, tasks, user, isAuth }) {
     });
     setLocalTasks(tasksArray);
   }, [tasks]);
+
+  function toggleHandler() {
+    setToggle(!toggle);
+    console.log(toggle);
+  }
 
   function deleteAndAnimateTaskHandler(taskId) {
     setLocalTasks(
@@ -248,7 +254,7 @@ function Tasks({ addTaskAction, deleteTaskAction, tasks, user, isAuth }) {
       <button onClick={() => addTaskHandler(newTask)}>
         <b>Add Task!</b>
       </button>
-      <CreateTaskContainer>
+      <CreateTaskContainer toggle={toggle} onClick={() => toggleHandler()}>
         <PlaceHolderPlusContainer>&#65291;</PlaceHolderPlusContainer>
         <PlaceHolderTextContainer>Create new task...</PlaceHolderTextContainer>
       </CreateTaskContainer>
