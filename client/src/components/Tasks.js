@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import {
@@ -8,35 +8,47 @@ import {
 } from "../redux/actions/taskActions";
 
 const taskAnimationHandler = (props) => {
-  let horizontalDisp = (70 + Math.random() * 45) * 1.2;
-  let verticalDisp = (-60 + Math.random() * -45) * 1.2;
-  let rotation = 300 + Math.random() * 2000;
-  let speed = 0.7 + Math.random() * 1.5;
-  if (props.id === props.animate)
+  let horizontalDisp = 70 * 1.2;
+  let verticalDisp = -60 * 1.2;
+  let rotation = 180;
+  let speed = 0.4 + Math.random() * 0.4;
+  if (props.animate)
     return ` position: absolute; transform: translate(${horizontalDisp}vw, ${verticalDisp}vh) rotate(${rotation}deg);   transition:all ${speed}s ease-in;`;
 };
 
 const TaskContainer = styled.div`
-  ${(props) => {
-    console.log("id: ", props.id);
-    console.log("hovered: ", props.hoovered);
-    console.log("animate: ", props.animate);
-  }}
   margin-top: 1rem;
   border: 1px solid rgba(61, 66, 69, 0.85);
   padding: 1rem;
   border-radius: 0.5em;
   display: flex;
   flex-flow: wrap;
-
+  max-width: 80vw;
   align-items: center;
-  width: 100%;
-  ${(props) =>
-    props.id === props.hoovered ? taskAnimationHandler(props) : ""};
+  white-space: initial;
+  ${(props) => (props.animate === true ? taskAnimationHandler(props) : "")};
 `;
-const TaskImportanceContainer = styled.div`
+
+const TaskDescriptionContainer = styled.textarea`
+  margin-top: 1rem;
+  color: inherit;
+  height: auto;
+  font-family: inherit;
+  background-color: #181a1b;
   border: 1px solid rgba(61, 66, 69, 0.85);
   padding: 1rem;
+  border-radius: 0.5em;
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  overflow-y: auto;
+  flex: 1;
+  resize: none;
+`;
+const TaskImportanceContainer = styled.div`
+  /* border: 1px solid rgba(61, 66, 69, 0.85); */
+  padding: 1rem;
+  margin-right: 1rem;
   border-radius: 0.5em;
   display: flex;
   flex-direction: column;
@@ -44,28 +56,66 @@ const TaskImportanceContainer = styled.div`
   align-items: center;
   height: 100%;
   font-size: 2.5em;
-  /* ${(props) =>
-    props.id === props.hooveredTask ? taskAnimationHandler(props) : ""}; */
 `;
 
 const DoneButton = styled.button`
-  ${(props) =>
-    props.id === props.hooveredTask
-      ? console.log(
-          "doen button rendered because of task hoover: ",
-          props.animate
-        )
-      : ""}
   background-color: rgba(186, 0, 84, 0.8);
-  border-radius: 3em;
-  height: 3.7em;
+  border-radius: 8em;
+  height: 3.5em;
+  width: 3.5em !important;
+  margin: 1em;
+  padding: 0.4em !important;
   color: inherit;
   font-weight: 600;
   border: none;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in;
+  font-size: ${(props) => (props.isHoovered ? "1rem" : "0.2rem")};
+  opacity: ${(props) => (props.isHoovered ? 1 : 0)};
+  width: ${(props) => (props.isHoovered ? "3.1rem" : "0.5rem")};
   &:hover {
     background-color: rgba(186, 0, 84, 1);
   }
+`;
+const ImportanceDescriptionContainer = styled.div`
+  font-size: 0.65rem;
+  transition: all 0.5s ease-in-out;
+  visibility: ${(props) => (props.isHoovered ? "visible" : "hidden")};
+  opacity: ${(props) => (props.isHoovered ? 1 : 0)};
+`;
+const CreateTaskContainer = styled.div`
+  border: 1px solid rgba(61, 66, 69, 0.85);
+  color: inherit;
+  background-color: #181a1b;
+  border-radius: 0.5em;
+  display: flex;
+  align-items: center;
+`;
+const PlaceHolderPlusContainer = styled.div`
+  color: rgb(200, 195, 188) !important;
+  opacity: 0.5;
+  border: 1px solid rgba(186, 0, 84, 1);
+  border-radius: 50%;
+  font-size: 2em;
+  height: 1em;
+  width: 1.1em;
+  background-color: #181a1b;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 0.1em;
+  margin: 0.15em;
+`;
+
+const PlaceHolderTextContainer = styled.div`
+  color: inherit;
+  opacity: 0.5;
+  height: 100%;
+  background-color: #181a1b;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
 `;
 
 function Tasks({ addTaskAction, deleteTaskAction, tasks, user, isAuth }) {
@@ -73,22 +123,67 @@ function Tasks({ addTaskAction, deleteTaskAction, tasks, user, isAuth }) {
     importance: 0,
     description: "",
   });
+  // Local state for hoover and deletion rendering
+  const [localTasks, setLocalTasks] = useState([
+    {
+      createdAt: "",
+      description: "",
+      importance: 0,
+      isCompleted: false,
+      updatedAt: "",
+      userId: "",
+      animate: true,
+      isHoovered: false,
+      __v: 0,
+    },
+  ]);
 
-  // Local state for identifying last deleted task to perform animation before deletion
-  const [animateTask, setAnimateTask] = useState("");
+  // Local state to control toggle for task creation
 
-  // Local state for identifying a hoovered card and display extra info
-  const [hooveredTask, setHooveredTask] = useState("");
+  const [toggle, setToggle] = useState();
+
+  useEffect(() => {
+    let tasksArray = tasks.map((task) => {
+      return { ...task, animate: false, isHoovered: false };
+    });
+    setLocalTasks(tasksArray);
+  }, [tasks]);
 
   function deleteAndAnimateTaskHandler(taskId) {
-    setAnimateTask(taskId);
+    setLocalTasks(
+      localTasks.map((task) => {
+        if (task._id === taskId) {
+          //Change animate property in local state so that only the card that had this prop changed will rerender
+          //Note that passing  rendering the cards based on props that change all the time
+          // for all ther cards would be inefficient because of all the rerenderings
+          return { ...task, animate: true };
+        } else {
+          return task;
+        }
+      })
+    );
     setTimeout(() => deleteTaskAction(taskId), 2200);
   }
-
-  // function deleteAndAnimateTaskHandler(taskId) {
-  //   setAnimateTask(taskId);
-  //   setTimeout(() => deleteTaskAction(taskId), 2200);
-  // }
+  function hooverHandler(e, taskId) {
+    if (e.type === "mouseenter") {
+      setLocalTasks(
+        localTasks.map((task) => {
+          if (task._id === taskId) {
+            // Updtate local state, only cards that had their props changed will rerender
+            return { ...task, isHoovered: true };
+          }
+          return { ...task, isHoovered: false };
+        })
+      );
+    }
+    if (e.type === "mouseleave") {
+      setLocalTasks(
+        localTasks.map((task) => {
+          return { ...task, isHoovered: false };
+        })
+      );
+    }
+  }
 
   function addTaskHandler(newTask) {
     addTaskAction(newTask);
@@ -101,26 +196,27 @@ function Tasks({ addTaskAction, deleteTaskAction, tasks, user, isAuth }) {
     setNewTask({ ...newTask, [name]: value });
   }
   //Create task cards
-
-  let mappedTasks = tasks.map((task) => (
+  let mappedTasks = localTasks.map((task) => (
     <TaskContainer
       key={task._id}
       id={task._id}
-      hoovered={hooveredTask}
-      onMouseOver={(e) => console.log(task._id)}
-      onMouseOut={() => console.log(task._id)}
+      animate={task.animate}
+      onMouseEnter={(e) => hooverHandler(e, task._id)}
+      onMouseLeave={(e) => hooverHandler(e, task._id)}
     >
       <DoneButton
-        animate={animateTask}
+        isHoovered={task.isHoovered}
         onClick={() => deleteAndAnimateTaskHandler(task._id)}
       >
         Done!
       </DoneButton>
       <TaskImportanceContainer>
-        <div style={{ fontSize: "1rem" }}>Importance</div>
+        <ImportanceDescriptionContainer isHoovered={task.isHoovered}>
+          Importance
+        </ImportanceDescriptionContainer>
         {task.importance}
       </TaskImportanceContainer>
-      -{task.description}
+      <TaskDescriptionContainer>{task.description}</TaskDescriptionContainer>
     </TaskContainer>
   ));
 
@@ -152,6 +248,10 @@ function Tasks({ addTaskAction, deleteTaskAction, tasks, user, isAuth }) {
       <button onClick={() => addTaskHandler(newTask)}>
         <b>Add Task!</b>
       </button>
+      <CreateTaskContainer>
+        <PlaceHolderPlusContainer>&#65291;</PlaceHolderPlusContainer>
+        <PlaceHolderTextContainer>Create new task...</PlaceHolderTextContainer>
+      </CreateTaskContainer>
       <div>{tasks.length === 0 ? "No tasks :)" : mappedTasks}</div>
     </div>
   );

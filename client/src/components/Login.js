@@ -56,8 +56,8 @@ function Login(props) {
   let errorMsg = error.msg;
   // Local states
   const [user, setUser] = useState({
-    email: "",
-    password: "",
+    email: "victor@gmail.com",
+    password: "1234",
   });
 
   //Display server messages
