@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
+import CreateTaskModal from "./CreateTaskModal";
 import {
   deleteTaskAction,
   addTaskAction,
@@ -44,7 +45,6 @@ const TaskDescriptionContainer = styled.div`
   overflow: auto;
   word-break: keep-all;
   flex: 1;
-  resize: none;
 `;
 const TaskImportanceContainer = styled.div`
   /* border: 1px solid rgba(61, 66, 69, 0.85); */
@@ -83,41 +83,6 @@ const ImportanceDescriptionContainer = styled.div`
   visibility: ${(props) => (props.isHoovered ? "visible" : "hidden")};
   opacity: ${(props) => (props.isHoovered ? 1 : 0)};
 `;
-const CreateTaskContainer = styled.div`
-  border: 1px solid rgba(61, 66, 69, 0.85);
-  color: inherit;
-  background-color: #181a1b;
-  border-radius: 0.5em;
-  display: flex;
-  align-items: center;
-`;
-const PlaceHolderPlusContainer = styled.div`
-  color: rgb(200, 195, 188) !important;
-  opacity: 0.5;
-  border: 1px solid rgba(186, 0, 84, 1);
-  border-radius: 50%;
-  font-size: 2em;
-  height: 1em;
-  width: 1.1em;
-  background-color: #181a1b;
-  display: flex;
-  text-align: center;
-  justify-content: center;
-  align-items: center;
-  padding-bottom: 0.1em;
-  margin: 0.15em;
-`;
-
-const PlaceHolderTextContainer = styled.div`
-  color: inherit;
-  opacity: 0.5;
-  height: 100%;
-  background-color: #181a1b;
-  display: flex;
-  text-align: center;
-  justify-content: center;
-  align-items: center;
-`;
 
 function Tasks({ addTaskAction, deleteTaskAction, tasks, user, isAuth }) {
   const [newTask, setNewTask] = useState({
@@ -139,21 +104,12 @@ function Tasks({ addTaskAction, deleteTaskAction, tasks, user, isAuth }) {
     },
   ]);
 
-  // Local state to control toggle for task creation
-
-  const [toggle, setToggle] = useState(true);
-
   useEffect(() => {
     let tasksArray = tasks.map((task) => {
       return { ...task, animate: false, isHoovered: false };
     });
     setLocalTasks(tasksArray);
   }, [tasks]);
-
-  function toggleHandler() {
-    setToggle(!toggle);
-    console.log(toggle);
-  }
 
   function deleteAndAnimateTaskHandler(taskId) {
     setLocalTasks(
@@ -168,7 +124,7 @@ function Tasks({ addTaskAction, deleteTaskAction, tasks, user, isAuth }) {
         }
       })
     );
-    setTimeout(() => deleteTaskAction(taskId), 2200);
+    setTimeout(() => deleteTaskAction(taskId), 1000);
   }
   function hooverHandler(e, taskId) {
     if (e.type === "mouseenter") {
@@ -254,10 +210,7 @@ function Tasks({ addTaskAction, deleteTaskAction, tasks, user, isAuth }) {
       <button onClick={() => addTaskHandler(newTask)}>
         <b>Add Task!</b>
       </button>
-      <CreateTaskContainer toggle={toggle} onClick={() => toggleHandler()}>
-        <PlaceHolderPlusContainer>&#65291;</PlaceHolderPlusContainer>
-        <PlaceHolderTextContainer>Create new task...</PlaceHolderTextContainer>
-      </CreateTaskContainer>
+      <CreateTaskModal />
       <div>{tasks.length === 0 ? "No tasks :)" : mappedTasks}</div>
     </div>
   );
