@@ -65,7 +65,7 @@ const CreateTaskIconContainer = styled.button`
   align-self: flex-start;
   display: flex;
   align-items: center;
-  width: 100%;
+  width: ${(props) => (props.isToggled ? "30%" : "100%")};
   margin: 0.3em 0em;
   &:hover {
     border: 2 px solid rgba(186, 0, 84, 0.8);
@@ -167,7 +167,7 @@ function CreateTaskModal(props) {
                 justifyContent: "center",
               }}
             >
-              <div style={{ fontSize: "0.7rem" }}>Task importance</div>
+              <div style={{ fontSize: "0.7rem" }}>Importance</div>
               <TaskImportanceContainer
                 name="importance"
                 type="text"
@@ -188,19 +188,28 @@ function CreateTaskModal(props) {
           </label>
         </FormContainer>
       </div>
-      <CreateTaskIconContainer
-        onClick={() => {
-          toggleHandler();
-          addTaskHandler(newTask);
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          width: "100%",
         }}
       >
-        <PlaceHolderPlusContainer toggle={toggle.isToggled}>
-          &#65291;
-        </PlaceHolderPlusContainer>
-        <PlaceHolderTextContainer toggle={toggle.isToggled}>
-          {toggle ? "Create!" : "Create new task..."}
-        </PlaceHolderTextContainer>
-      </CreateTaskIconContainer>
+        <CreateTaskIconContainer
+          toggle={toggle.isToggled}
+          onClick={() => {
+            toggleHandler();
+            addTaskHandler(newTask);
+          }}
+        >
+          <PlaceHolderPlusContainer toggle={toggle.isToggled}>
+            &#65291;
+          </PlaceHolderPlusContainer>
+          <PlaceHolderTextContainer toggle={toggle.isToggled}>
+            {toggle ? "Create!" : "Create new task..."}
+          </PlaceHolderTextContainer>
+        </CreateTaskIconContainer>
+      </div>
     </CreateTaskContainer>
   );
 }

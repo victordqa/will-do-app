@@ -28,6 +28,10 @@ const TaskContainer = styled.div`
     outline: none !important;
     box-shadow: 0 0 10px #719ece;
   }
+  @media only screen and (max-width: 768px) {
+    /* For mobile phones: */
+    flex-direction: column;
+  }
 `;
 
 const TaskDescriptionContainer = styled.div`
