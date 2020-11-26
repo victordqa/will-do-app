@@ -37,7 +37,7 @@ export const deleteTaskAction = (taskId) => async (dispatch, getState) => {
       data: data,
       ...config,
     });
-    dispatch(deleteTaskSuccsessAction());
+    dispatch(deleteTaskSuccsessAction(res));
     dispatch(getTasksAction());
   } catch (e) {
     console.error(e.message);
@@ -61,7 +61,7 @@ export const addTaskAction = (newTask) => async (dispatch, getState) => {
       data,
       config
     );
-    dispatch(addTaskSuccsessAction());
+    dispatch(addTaskSuccsessAction(res));
     dispatch(getTasksAction());
   } catch (e) {
     console.error(e.message);
