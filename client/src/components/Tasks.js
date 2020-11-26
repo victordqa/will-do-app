@@ -16,7 +16,7 @@ const taskAnimationHandler = (props) => {
 const TaskContainer = styled.div`
   margin-top: 1rem;
   border: 1px solid rgba(61, 66, 69, 0.85);
-  padding: 1rem;
+  padding: 0.4rem;
   border-radius: 0.5em;
   display: flex;
   flex-flow: wrap;
@@ -122,7 +122,7 @@ function Tasks({ deleteTaskAction, tasks, user, isAuth }) {
     setTimeout(() => deleteTaskAction(taskId), 1000);
   }
   function hooverHandler(e, taskId) {
-    if (e.type === "mouseenter" || "focus") {
+    if (e.type === "mouseenter" || "focus" || "mouseover") {
       setLocalTasks(
         localTasks.map((task) => {
           if (task._id === taskId) {
@@ -150,6 +150,7 @@ function Tasks({ deleteTaskAction, tasks, user, isAuth }) {
       id={task._id}
       animate={task.animate}
       onFocus={(e) => hooverHandler(e, task._id)}
+      onMouseOver={(e) => hooverHandler(e, task._id)}
       onMouseEnter={(e) => hooverHandler(e, task._id)}
       onMouseLeave={(e) => hooverHandler(e, task._id)}
     >

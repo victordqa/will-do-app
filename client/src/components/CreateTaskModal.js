@@ -16,12 +16,12 @@ const CreateTaskContainer = styled.div`
 
 const FormContainer = styled.form`
   display: flex;
-  margin-top: ${(props) => (props.toggle ? "3%" : "-25%")};
+  margin-top: ${(props) => (props.toggle ? "3%" : "-30%")};
   margin-bottom: 0.5em;
   border-radius: 0.5em;
   width: 100%;
   align-items: center;
-  transition: all 0.4s ease-in-out;
+  transition: all 0.3s ease-in-out;
   align-items: center;
   justify-content: space-evenly;
 `;
@@ -49,8 +49,8 @@ const TaskImportanceContainer = styled.input`
   background-color: #181a1b;
   color: inherit;
   text-align: center;
-  height: 2em;
-  width: 100%;
+  height: 3em;
+  width: 3em;
   font-size: 0.7rem;
 
   &:focus {
@@ -128,9 +128,16 @@ function CreateTaskModal(props) {
     }
   }
   function addTaskHandler(newTask) {
-    console.log("should add", newTask.description);
-    if (toggle.numberOfClicks === 1) {
+    if (
+      toggle.numberOfClicks === 1 &&
+      newTask.importance != "" &&
+      newTask.description != ""
+    ) {
       addTaskAction(newTask);
+      setNewTask({
+        importance: "",
+        description: "",
+      });
     }
   }
 
@@ -153,13 +160,21 @@ function CreateTaskModal(props) {
               width: "10% ",
             }}
           >
-            <TaskImportanceContainer
-              name="importance"
-              type="text"
-              value={newTask.importance}
-              placeholder="Importance"
-              onChange={(event) => onChangeHandler(event)}
-            ></TaskImportanceContainer>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+              }}
+            >
+              <div style={{ fontSize: "0.7rem" }}>Task importance</div>
+              <TaskImportanceContainer
+                name="importance"
+                type="text"
+                value={newTask.importance}
+                onChange={(event) => onChangeHandler(event)}
+              ></TaskImportanceContainer>
+            </div>
           </label>
           <label htmlFor="description" style={{ width: "50%" }}>
             <CreateTaskDescriptionContainer

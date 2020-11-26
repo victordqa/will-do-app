@@ -86,6 +86,9 @@ function Navbar(props) {
           <StyledLink $isAuth={!isAuth} to="/register">
             <RegisterContainer>Register</RegisterContainer>
           </StyledLink>
+          <LogOutStyledLink $isAuth={isAuth} to="/tasks">
+            <b>My Tasks</b>
+          </LogOutStyledLink>
           <LogOutStyledLink $isAuth={isAuth} to="/">
             <b onClick={() => logOutHandler()}>Log out</b>
           </LogOutStyledLink>
