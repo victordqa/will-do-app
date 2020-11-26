@@ -129,8 +129,8 @@ function CreateTaskModal(props) {
   function addTaskHandler(newTask) {
     if (
       toggle.numberOfClicks === 1 &&
-      newTask.importance != "" &&
-      newTask.description != ""
+      newTask.importance !== "" &&
+      newTask.description !== ""
     ) {
       addTaskAction(newTask);
       setNewTask({
