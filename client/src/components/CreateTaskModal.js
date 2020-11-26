@@ -9,18 +9,31 @@ const CreateTaskContainer = styled.div`
   background-color: #181a1b;
   border-radius: 0.5em;
   display: flex;
+  width: 100%;
   flex-direction: column;
   align-items: center;
 `;
-const TaskDescriptionContainer = styled.textarea`
+
+const FormContainer = styled.form`
+  display: flex;
+  margin-top: ${(props) => (props.toggle ? "3%" : "-25%")};
+  margin-bottom: 0.5em;
+  border-radius: 0.5em;
+  width: 100%;
+  align-items: center;
+  transition: all 0.4s ease-in-out;
+  align-items: center;
+  justify-content: space-evenly;
+`;
+const CreateTaskDescriptionContainer = styled.textarea`
   color: inherit;
   font-family: inherit;
   background-color: #181a1b;
   border: 1px solid rgba(61, 66, 69, 0.85);
-  padding: 1rem;
   border-radius: 0.5em;
-  display: flex;
-  width: 120%;
+  text-align: center;
+  vertical-align: middle;
+  width: 100% !important; //override textarea default
   word-break: keep-all;
   flex: 1;
   &:focus {
@@ -31,17 +44,14 @@ const TaskDescriptionContainer = styled.textarea`
 
 const TaskImportanceContainer = styled.input`
   border: 1px solid rgba(61, 66, 69, 0.85);
-  padding: 0.5rem;
   margin-right: 1rem;
   border-radius: 0.5em;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   background-color: #181a1b;
   color: inherit;
-  width: 2em;
+  text-align: center;
   height: 2em;
-  font-size: 1rem;
+  width: 100%;
+  font-size: 0.7rem;
 
   &:focus {
     outline: none !important;
@@ -50,7 +60,7 @@ const TaskImportanceContainer = styled.input`
 `;
 const CreateTaskIconContainer = styled.button`
   color: inherit;
-  border: 2px solid red;
+  border: none;
   background-color: #181a1b;
   align-self: flex-start;
   display: flex;
@@ -83,6 +93,10 @@ const PlaceHolderPlusContainer = styled.div`
   align-items: center;
   padding-bottom: 0.1em;
   margin: 0.15em;
+  &:hover {
+    border: 1px solid red;
+    color: 2px solid red;
+  }
 `;
 
 const PlaceHolderTextContainer = styled.div`
@@ -96,20 +110,6 @@ const PlaceHolderTextContainer = styled.div`
   align-items: center;
 `;
 
-const FormContainer = styled.form`
-  display: flex;
-  margin-top: ${(props) => (props.toggle ? 0 : "-25%")};
-  border: 1px solid rgba(61, 66, 69, 0.85);
-  border: 1px solid red;
-  padding: 1rem;
-  border-radius: 0.5em;
-  width: 70vw;
-  align-items: center;
-  white-space: initial;
-  transition: all 0.4s ease-in-out;
-  align-items: center;
-`;
-
 function CreateTaskModal(props) {
   let { addTaskAction } = props;
   const [newTask, setNewTask] = useState({
@@ -118,14 +118,20 @@ function CreateTaskModal(props) {
   });
 
   // Local state to control toggle for task creation
-  const [toggle, setToggle] = useState(false);
+  const [toggle, setToggle] = useState({ isToggled: false, numberOfClicks: 0 });
 
   function toggleHandler() {
-    setToggle(!toggle);
+    if (toggle.numberOfClicks === 0) {
+      setToggle({ isToggled: true, numberOfClicks: 1 });
+    } else {
+      setToggle({ isToggled: false, numberOfClicks: 0 });
+    }
   }
   function addTaskHandler(newTask) {
     console.log("should add", newTask.description);
-    // addTaskAction(newTask);
+    if (toggle.numberOfClicks === 1) {
+      addTaskAction(newTask);
+    }
   }
 
   function onChangeHandler(event) {
@@ -136,9 +142,17 @@ function CreateTaskModal(props) {
   }
   return (
     <CreateTaskContainer>
-      <div style={{ overflow: "hidden" }}>
-        <FormContainer onSubmit={(e) => e.preventDefault()} toggle={toggle}>
-          <label htmlFor="importance">
+      <div style={{ overflow: "hidden", width: "100% " }}>
+        <FormContainer
+          onSubmit={(e) => e.preventDefault()}
+          toggle={toggle.isToggled}
+        >
+          <label
+            htmlFor="importance"
+            style={{
+              width: "10% ",
+            }}
+          >
             <TaskImportanceContainer
               name="importance"
               type="text"
@@ -147,27 +161,28 @@ function CreateTaskModal(props) {
               onChange={(event) => onChangeHandler(event)}
             ></TaskImportanceContainer>
           </label>
-          <label htmlFor="description">
-            <TaskDescriptionContainer
+          <label htmlFor="description" style={{ width: "50%" }}>
+            <CreateTaskDescriptionContainer
               name="description"
               type="text"
-              placeholder="Task description"
+              placeholder="Task description..."
+              rows={4}
               value={newTask.description}
               onChange={(event) => onChangeHandler(event)}
-            ></TaskDescriptionContainer>
+            ></CreateTaskDescriptionContainer>
           </label>
         </FormContainer>
       </div>
       <CreateTaskIconContainer
         onClick={() => {
-          addTaskHandler(newTask);
           toggleHandler();
+          addTaskHandler(newTask);
         }}
       >
-        <PlaceHolderPlusContainer toggle={toggle}>
+        <PlaceHolderPlusContainer toggle={toggle.isToggled}>
           &#65291;
         </PlaceHolderPlusContainer>
-        <PlaceHolderTextContainer toggle={toggle}>
+        <PlaceHolderTextContainer toggle={toggle.isToggled}>
           {toggle ? "Create!" : "Create new task..."}
         </PlaceHolderTextContainer>
       </CreateTaskIconContainer>

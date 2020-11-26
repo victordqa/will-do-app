@@ -24,6 +24,10 @@ const TaskContainer = styled.div`
   align-items: center;
   white-space: initial;
   ${(props) => (props.animate === true ? taskAnimationHandler(props) : "")};
+  &:focus {
+    outline: none !important;
+    box-shadow: 0 0 10px #719ece;
+  }
 `;
 
 const TaskDescriptionContainer = styled.div`
@@ -118,7 +122,7 @@ function Tasks({ deleteTaskAction, tasks, user, isAuth }) {
     setTimeout(() => deleteTaskAction(taskId), 1000);
   }
   function hooverHandler(e, taskId) {
-    if (e.type === "mouseenter") {
+    if (e.type === "mouseenter" || "focus") {
       setLocalTasks(
         localTasks.map((task) => {
           if (task._id === taskId) {
@@ -141,9 +145,11 @@ function Tasks({ deleteTaskAction, tasks, user, isAuth }) {
   //Create task cards
   let mappedTasks = localTasks.map((task) => (
     <TaskContainer
+      tabIndex={0}
       key={task._id}
       id={task._id}
       animate={task.animate}
+      onFocus={(e) => hooverHandler(e, task._id)}
       onMouseEnter={(e) => hooverHandler(e, task._id)}
       onMouseLeave={(e) => hooverHandler(e, task._id)}
     >
@@ -164,10 +170,10 @@ function Tasks({ deleteTaskAction, tasks, user, isAuth }) {
   ));
 
   return (
-    <div style={{ border: "2px solid red" }}>
+    <div style={{ width: "100%" }}>
       <h3> {isAuth ? `Hello ${user.username}!` : ""} </h3>
       <CreateTaskModal />
-      <div>{tasks.length === 0 ? "No tasks :)" : mappedTasks}</div>
+      <div>{tasks.length === 0 ? "No tasks to show :)" : mappedTasks}</div>
     </div>
   );
 }

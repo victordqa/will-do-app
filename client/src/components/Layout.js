@@ -9,7 +9,7 @@ const SpacerContainer = styled.div`
 `;
 const LayoutContainer = styled.div`
   display: flex;
-  width: 85vw;
+  width: 60vw;
   /* border: 2px solid blue; */
   flex-direction: column;
   justify-content: center;
