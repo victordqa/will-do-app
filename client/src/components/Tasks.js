@@ -2,17 +2,13 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import CreateTaskModal from "./CreateTaskModal";
-import {
-  deleteTaskAction,
-  addTaskAction,
-  getTasksAction,
-} from "../redux/actions/taskActions";
+import { deleteTaskAction, getTasksAction } from "../redux/actions/taskActions";
 
 const taskAnimationHandler = (props) => {
   let horizontalDisp = 70 * 1.2;
   let verticalDisp = -60 * 1.2;
   let rotation = 180;
-  let speed = 0.4 + Math.random() * 0.4;
+  let speed = 0.6;
   if (props.animate)
     return ` position: absolute; transform: translate(${horizontalDisp}vw, ${verticalDisp}vh) rotate(${rotation}deg);   transition:all ${speed}s ease-in;`;
 };
@@ -24,7 +20,7 @@ const TaskContainer = styled.div`
   border-radius: 0.5em;
   display: flex;
   flex-flow: wrap;
-  max-width: 80vw;
+  max-width: 100%;
   align-items: center;
   white-space: initial;
   ${(props) => (props.animate === true ? taskAnimationHandler(props) : "")};
@@ -41,7 +37,6 @@ const TaskDescriptionContainer = styled.div`
   border-radius: 0.5em;
   display: flex;
   flex-direction: column;
-  width: 50%;
   overflow: auto;
   word-break: keep-all;
   flex: 1;
@@ -84,11 +79,7 @@ const ImportanceDescriptionContainer = styled.div`
   opacity: ${(props) => (props.isHoovered ? 1 : 0)};
 `;
 
-function Tasks({ addTaskAction, deleteTaskAction, tasks, user, isAuth }) {
-  const [newTask, setNewTask] = useState({
-    importance: 0,
-    description: "",
-  });
+function Tasks({ deleteTaskAction, tasks, user, isAuth }) {
   // Local state for hoover and deletion rendering
   const [localTasks, setLocalTasks] = useState([
     {
@@ -147,16 +138,6 @@ function Tasks({ addTaskAction, deleteTaskAction, tasks, user, isAuth }) {
     }
   }
 
-  function addTaskHandler(newTask) {
-    addTaskAction(newTask);
-  }
-
-  function onChangeHandler(event) {
-    event.preventDefault();
-    let name = event.target.name;
-    let value = event.target.value;
-    setNewTask({ ...newTask, [name]: value });
-  }
   //Create task cards
   let mappedTasks = localTasks.map((task) => (
     <TaskContainer
@@ -183,33 +164,8 @@ function Tasks({ addTaskAction, deleteTaskAction, tasks, user, isAuth }) {
   ));
 
   return (
-    <div>
+    <div style={{ border: "2px solid red" }}>
       <h3> {isAuth ? `Hello ${user.username}!` : ""} </h3>
-      <form onSubmit={(e) => e.preventDefault()}>
-        <label htmlFor="description">
-          {" "}
-          Task description
-          <input
-            name="description"
-            type="text"
-            value={newTask.description}
-            onChange={(event) => onChangeHandler(event)}
-          ></input>
-        </label>
-        <label htmlFor="importance">
-          {" "}
-          Task importance
-          <input
-            name="importance"
-            type="text"
-            value={newTask.importance}
-            onChange={(event) => onChangeHandler(event)}
-          ></input>
-        </label>
-      </form>
-      <button onClick={() => addTaskHandler(newTask)}>
-        <b>Add Task!</b>
-      </button>
       <CreateTaskModal />
       <div>{tasks.length === 0 ? "No tasks :)" : mappedTasks}</div>
     </div>
@@ -230,7 +186,6 @@ let mapDispatchToProps = (dispatch) => {
   return {
     getTasksAction: () => dispatch(getTasksAction()),
     deleteTaskAction: (taskId) => dispatch(deleteTaskAction(taskId)),
-    addTaskAction: (newTask) => dispatch(addTaskAction(newTask)),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Tasks);
