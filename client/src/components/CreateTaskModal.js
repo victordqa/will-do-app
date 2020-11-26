@@ -44,7 +44,6 @@ const CreateTaskDescriptionContainer = styled.textarea`
 
 const TaskImportanceContainer = styled.input`
   border: 1px solid rgba(61, 66, 69, 0.85);
-  margin-right: 1rem;
   border-radius: 0.5em;
   background-color: #181a1b;
   color: inherit;
@@ -157,24 +156,20 @@ function CreateTaskModal(props) {
           <label
             htmlFor="importance"
             style={{
-              width: "10% ",
+              width: "30% ",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
             }}
           >
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-              }}
-            >
-              <div style={{ fontSize: "0.7rem" }}>Importance</div>
-              <TaskImportanceContainer
-                name="importance"
-                type="text"
-                value={newTask.importance}
-                onChange={(event) => onChangeHandler(event)}
-              ></TaskImportanceContainer>
-            </div>
+            <div style={{ fontSize: "0.7rem" }}>Importance</div>
+            <TaskImportanceContainer
+              name="importance"
+              type="text"
+              value={newTask.importance}
+              onChange={(event) => onChangeHandler(event)}
+            ></TaskImportanceContainer>
           </label>
           <label htmlFor="description" style={{ width: "50%" }}>
             <CreateTaskDescriptionContainer
