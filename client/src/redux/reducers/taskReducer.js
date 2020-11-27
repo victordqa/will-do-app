@@ -7,6 +7,7 @@ import {
 
 let initialState = {
   tasks: [],
+  msg: "",
   loading: false,
 };
 
@@ -16,6 +17,7 @@ export const taskReducer = (state = initialState, action) => {
     case DELETE_TASK_SUCCSESS:
       return {
         ...state,
+        msg: action.payload.msg,
         loading: false,
       };
     case LOADING_TASKS:
