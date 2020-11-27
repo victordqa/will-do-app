@@ -119,20 +119,23 @@ function CreateTaskModal(props) {
   // Local state to control toggle for task creation
   const [toggle, setToggle] = useState({ isToggled: false, numberOfClicks: 0 });
 
-  function toggleHandler() {
-    if (toggle.numberOfClicks === 0) {
-      setToggle({ isToggled: true, numberOfClicks: 1 });
-    } else {
-      setToggle({ isToggled: false, numberOfClicks: 0 });
-    }
-  }
+  function toggleHandler() {}
   function addTaskHandler(newTask) {
-    if (toggle.numberOfClicks === 1 && newTask.description !== "") {
+    if (toggle.numberOfClicks === 0) {
+      //Open modal on first click
+      setToggle({ isToggled: true, numberOfClicks: 1 });
+    } else if (toggle.numberOfClicks === 1 && newTask.description !== "") {
+      //On second click check if task description is completed and dispatches addNewTask
       addTaskAction(newTask);
+      //Clears create task field
       setNewTask({
         importance: "",
         description: "",
       });
+      //Closes modal, reset number of clicks
+      setToggle({ isToggled: false, numberOfClicks: 0 });
+    } else if (toggle.numberOfClicks === 1 && newTask.description === "") {
+      console.log("Please enter a description");
     }
   }
 
