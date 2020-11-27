@@ -31,6 +31,7 @@ export const loadUser = () => async (dispatch, getState) => {
   }
 };
 
+//Configure request header, add a token from local storage, if any.
 export const tokenConfig = (getState) => {
   //Get token from redux, if any
   let token = getState().auth.token;
@@ -38,7 +39,7 @@ export const tokenConfig = (getState) => {
     headers: { "content-type": "application/json" },
   };
 
-  //if there is a token, add it to headers
+  //if there is token, add it to headers
   if (token) {
     config.headers["x-auth-token"] = token;
   }

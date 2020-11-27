@@ -8,7 +8,7 @@ import axios from "axios";
 import { tokenConfig } from "./authActions";
 import { getErrorsAction } from "./errorActions";
 
-//Get all tasks of a specific user based on token's payload (userId)
+//Send a request yo GET all tasks of a specific user based on token's payload (userId)
 export const getTasksAction = () => async (dispatch, getState) => {
   dispatch(loadingTasksAction());
   try {
@@ -24,6 +24,8 @@ export const getTasksAction = () => async (dispatch, getState) => {
     );
   }
 };
+
+//Send a delete request to
 export const deleteTaskAction = (taskId) => async (dispatch, getState) => {
   dispatch(loadingTasksAction());
 
