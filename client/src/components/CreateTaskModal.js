@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import { addTaskAction } from "../redux/actions/taskActions";
@@ -110,7 +110,13 @@ const PlaceHolderTextContainer = styled.div`
 `;
 
 function CreateTaskModal(props) {
-  let { addTaskAction } = props;
+  let { addTaskAction, taskMsg } = props;
+
+  useEffect(() => {
+    //trigger msg modal
+  }, [taskMsg]);
+
+  //Local state for forms.
   const [newTask, setNewTask] = useState({
     importance: "",
     description: "",
@@ -208,9 +214,12 @@ function CreateTaskModal(props) {
   );
 }
 
+let mapStateToProps = (store) => {
+  return { taskMsg: store.task.msg };
+};
 let mapDispatchToProps = (dispatch) => {
   return {
     addTaskAction: (newTask) => dispatch(addTaskAction(newTask)),
   };
 };
-export default connect(null, mapDispatchToProps)(CreateTaskModal);
+export default connect(mapStateToProps, mapDispatchToProps)(CreateTaskModal);

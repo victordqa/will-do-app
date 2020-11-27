@@ -39,7 +39,7 @@ export const deleteTaskAction = (taskId) => async (dispatch, getState) => {
       data: data,
       ...config,
     });
-    dispatch(deleteTaskSuccsessAction(res));
+    dispatch(deleteTaskSuccsessAction(res.data));
     dispatch(getTasksAction());
   } catch (e) {
     console.error(e.message);
@@ -85,6 +85,6 @@ export const addTaskSuccsessAction = (data) => {
   return { type: ADD_TASK_SUCCSESS, payload: data };
 };
 
-export const deleteTaskSuccsessAction = () => {
-  return { type: DELETE_TASK_SUCCSESS };
+export const deleteTaskSuccsessAction = (data) => {
+  return { type: DELETE_TASK_SUCCSESS, payload: data };
 };
