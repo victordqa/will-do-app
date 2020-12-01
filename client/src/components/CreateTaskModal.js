@@ -47,6 +47,7 @@ const CreateTaskDescriptionContainer = styled.textarea`
 const TaskImportanceContainer = styled.input`
   border: 1px solid rgba(61, 66, 69, 0.85);
   border-radius: 0.5em;
+  font-size: 1.2rem !important;
   background-color: #181a1b;
   color: inherit;
   text-align: center;
