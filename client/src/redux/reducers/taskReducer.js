@@ -3,6 +3,7 @@ import {
   DELETE_TASK_SUCCSESS,
   LOADING_TASKS,
   LOADING_TASKS_SUCCSESS,
+  CLEAR_SUCCSESS_MESSAGES,
 } from "../actions/types";
 
 let initialState = {
@@ -24,6 +25,11 @@ export const taskReducer = (state = initialState, action) => {
       return { ...state, loading: true };
     case LOADING_TASKS_SUCCSESS:
       return { ...state, tasks: action.payload, loading: false };
+    case CLEAR_SUCCSESS_MESSAGES:
+      return {
+        ...state,
+        msg: "",
+      };
     default:
       return state;
   }

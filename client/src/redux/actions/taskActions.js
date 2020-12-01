@@ -3,6 +3,7 @@ import {
   DELETE_TASK_SUCCSESS,
   LOADING_TASKS_SUCCSESS,
   LOADING_TASKS,
+  CLEAR_SUCCSESS_MESSAGES,
 } from "./types";
 import axios from "axios";
 import { tokenConfig } from "./authActions";
@@ -87,4 +88,8 @@ export const addTaskSuccsessAction = (data) => {
 
 export const deleteTaskSuccsessAction = (data) => {
   return { type: DELETE_TASK_SUCCSESS, payload: data };
+};
+
+export const clearSuccsessMessagesAction = () => {
+  return { type: CLEAR_SUCCSESS_MESSAGES };
 };

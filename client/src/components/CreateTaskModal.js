@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import { addTaskAction } from "../redux/actions/taskActions";
+import { clearSuccsessMessagesAction } from "../redux/actions/taskActions";
 
 const CreateTaskContainer = styled.div`
   border: 1px solid rgba(61, 66, 69, 0.85);
@@ -109,13 +110,36 @@ const PlaceHolderTextContainer = styled.div`
   align-items: center;
 `;
 
+const MsgContainer = styled.div`
+  border: 1px solid black;
+  color: inherit;
+  transition: all 0.5s ease-in-out;
+  background-color: rgba(61, 66, 69, 0.9);
+  border-radius: 0.5em;
+  text-align: center;
+  padding: 0.4em;
+  position: fixed;
+  top: 15%;
+  right: 0;
+  transform: ${(props) =>
+    props.displayMsg ? "translate(0, 0)" : "translate(100%, 0)"};
+`;
 function CreateTaskModal(props) {
-  let { addTaskAction, taskMsg } = props;
+  let { addTaskAction, taskMsg, clearSuccsessMessagesAction } = props;
 
   useEffect(() => {
     //trigger msg modal
+    if (taskMsg !== "") {
+      setDisplayMsg(true);
+      setTimeout(() => {
+        setDisplayMsg(false);
+        setTimeout(() => clearSuccsessMessagesAction(), 500);
+      }, 1500);
+    }
   }, [taskMsg]);
 
+  //Local state to control msg displays.
+  const [displayMsg, setDisplayMsg] = useState(false);
   //Local state for forms.
   const [newTask, setNewTask] = useState({
     importance: "",
@@ -153,6 +177,7 @@ function CreateTaskModal(props) {
   }
   return (
     <CreateTaskContainer>
+      <MsgContainer displayMsg={displayMsg}>{taskMsg}</MsgContainer>
       <div style={{ overflow: "hidden", width: "100% " }}>
         <FormContainer
           onSubmit={(e) => e.preventDefault()}
@@ -220,6 +245,7 @@ let mapStateToProps = (store) => {
 let mapDispatchToProps = (dispatch) => {
   return {
     addTaskAction: (newTask) => dispatch(addTaskAction(newTask)),
+    clearSuccsessMessagesAction: () => dispatch(clearSuccsessMessagesAction()),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(CreateTaskModal);
