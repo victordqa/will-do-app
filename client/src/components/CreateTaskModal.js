@@ -60,16 +60,13 @@ const TaskImportanceContainer = styled.input`
   }
 `;
 const CreateTaskIconContainer = styled.button`
-  color: inherit;
-  border: none;
   background-color: #181a1b;
   align-self: flex-start;
   display: flex;
   align-items: center;
-  border: 2px solid white;
   border-color: ${(props) =>
     props.toggle ? "rgba(186,0,84,1)" : "rgba(186,0,84,0.5)"};
-  width: ${(props) => (props.isToggled ? "100%" : "30%")};
+  width: ${(props) => (props.toggle ? "auto" : "100%")};
   margin: 0.3em 0em;
   &:hover {
     border: 2 px solid rgba(186, 0, 84, 0.8);
@@ -81,11 +78,9 @@ const CreateTaskIconContainer = styled.button`
 `;
 const PlaceHolderPlusContainer = styled.div`
   color: ${(props) =>
-    props.toggle ? "rgba(186,0,84,1)" : "rgb(200, 195, 188) !important"};
+    props.toggle ? "rgba(200, 195, 188,1)" : "rgba(200, 195, 188,0.7)"};
   border: 1px solid;
-  border-color: ${(props) =>
-    props.toggle ? "rgba(186,0,84,1)" : "rgba(186,0,84,0.5)"};
-  opacity: ${(props) => (props.toggle ? "1" : "0.5")};
+  opacity: ${(props) => (props.toggle ? "1" : "0.7")};
   border-radius: 50%;
   font-size: 2em;
   height: 1em;
@@ -114,6 +109,22 @@ const PlaceHolderTextContainer = styled.div`
   align-items: center;
 `;
 
+const CloseButton = styled.button`
+  margin: 0.5em;
+  color: inherit;
+  border: none;
+  border-bottom: 2px solid #181a1b;
+  background-color: #181a1b;
+  align-self: flex-end;
+  &:hover {
+    border-bottom: 2px solid rgba(186, 0, 84, 0.8);
+  }
+  &:focus {
+    outline: none !important;
+    box-shadow: 0 0 10px #719ece;
+  }
+`;
+
 const MsgContainer = styled.div`
   border: 1px solid black;
   color: inherit;
@@ -140,7 +151,7 @@ function CreateTaskModal(props) {
         setTimeout(() => clearSuccsessMessagesAction(), 500);
       }, 1500);
     }
-  }, [taskMsg]);
+  }, [taskMsg, clearSuccsessMessagesAction]);
 
   //Local state to control msg displays.
   const [displayMsg, setDisplayMsg] = useState(false);
@@ -245,6 +256,15 @@ function CreateTaskModal(props) {
             {toggle ? "Create!" : "Create new task..."}
           </PlaceHolderTextContainer>
         </CreateTaskIconContainer>
+        {toggle.isToggled ? (
+          <CloseButton
+            onClick={() => setToggle({ isToggled: false, numberOfClicks: 0 })}
+          >
+            Close
+          </CloseButton>
+        ) : (
+          ""
+        )}
       </div>
     </CreateTaskContainer>
   );
