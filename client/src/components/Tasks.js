@@ -112,6 +112,9 @@ function Tasks({ deleteTaskAction, tasks, user, isAuth }) {
   }, [tasks]);
 
   function deleteAndAnimateTaskHandler(taskId) {
+    if (!isAuth) {
+      window.location.href = "http://localhost:3000/";
+    }
     setLocalTasks(
       localTasks.map((task) => {
         if (task._id === taskId) {

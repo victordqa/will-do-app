@@ -146,7 +146,7 @@ const MsgContainer = styled.div`
     props.displayMsg ? "translate(0, 0)" : "translate(100%, 0)"};
 `;
 function CreateTaskModal(props) {
-  let { addTaskAction, taskMsg, clearSuccsessMessagesAction } = props;
+  let { addTaskAction, taskMsg, clearSuccsessMessagesAction, isAuth } = props;
 
   useEffect(() => {
     //trigger msg modal
@@ -176,7 +176,9 @@ function CreateTaskModal(props) {
   const [toggle, setToggle] = useState({ isToggled: false, numberOfClicks: 0 });
 
   function addTaskHandler(newTask) {
-    if (toggle.numberOfClicks === 0) {
+    if (!isAuth) {
+      window.location.href = "http://localhost:3000/";
+    } else if (toggle.numberOfClicks === 0) {
       //Open modal on first click
       setToggle({ isToggled: true, numberOfClicks: 1 });
       descriptionInput.current.focus();
@@ -281,7 +283,7 @@ function CreateTaskModal(props) {
 }
 
 let mapStateToProps = (store) => {
-  return { taskMsg: store.task.msg };
+  return { taskMsg: store.task.msg, isAuth: store.auth.isAuth };
 };
 let mapDispatchToProps = (dispatch) => {
   return {
