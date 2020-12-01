@@ -14,6 +14,7 @@ const taskAnimationHandler = (props) => {
 };
 
 const TaskContainer = styled.div`
+  ${console.log("rendered tasks")}
   margin-top: 1rem;
   border: 1px solid rgba(61, 66, 69, 0.85);
   padding: 0.4rem;

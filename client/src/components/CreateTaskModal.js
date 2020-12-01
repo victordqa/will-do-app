@@ -30,7 +30,8 @@ const CreateTaskDescriptionContainer = styled.textarea`
   color: inherit;
   font-family: inherit;
   background-color: #181a1b;
-  border: 1px solid rgba(61, 66, 69, 0.85);
+  border: ${(props) =>
+    props.alert ? "1px solid red" : "1px solid rgba(61, 66, 69, 0.85)"};
   border-radius: 0.5em;
   text-align: center;
   vertical-align: middle;
@@ -65,7 +66,10 @@ const CreateTaskIconContainer = styled.button`
   align-self: flex-start;
   display: flex;
   align-items: center;
-  width: ${(props) => (props.isToggled ? "30%" : "100%")};
+  border: 2px solid white;
+  border-color: ${(props) =>
+    props.toggle ? "rgba(186,0,84,1)" : "rgba(186,0,84,0.5)"};
+  width: ${(props) => (props.isToggled ? "100%" : "30%")};
   margin: 0.3em 0em;
   &:hover {
     border: 2 px solid rgba(186, 0, 84, 0.8);
@@ -140,10 +144,12 @@ function CreateTaskModal(props) {
 
   //Local state to control msg displays.
   const [displayMsg, setDisplayMsg] = useState(false);
+
   //Local state for forms.
   const [newTask, setNewTask] = useState({
     importance: "",
     description: "",
+    alertEmptyDescription: false,
   });
 
   // Local state to control toggle for task creation
@@ -155,17 +161,21 @@ function CreateTaskModal(props) {
       //Open modal on first click
       setToggle({ isToggled: true, numberOfClicks: 1 });
     } else if (toggle.numberOfClicks === 1 && newTask.description !== "") {
-      //On second click check if task description is completed and dispatches addNewTask
+      //On second click check if task description is completed, if so, dispatches addNewTask
       addTaskAction(newTask);
       //Clears create task field
       setNewTask({
         importance: "",
         description: "",
+        alertEmptyDescription: false,
       });
       //Closes modal, reset number of clicks
       setToggle({ isToggled: false, numberOfClicks: 0 });
     } else if (toggle.numberOfClicks === 1 && newTask.description === "") {
-      console.log("Please enter a description");
+      setNewTask({
+        ...newTask,
+        alertEmptyDescription: true,
+      });
     }
   }
 
@@ -208,6 +218,7 @@ function CreateTaskModal(props) {
               placeholder="Task description..."
               rows={4}
               value={newTask.description}
+              alert={newTask.alertEmptyDescription}
               onChange={(event) => onChangeHandler(event)}
             ></CreateTaskDescriptionContainer>
           </label>
