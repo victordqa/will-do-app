@@ -166,7 +166,7 @@ function CreateTaskModal(props) {
 
   //Local state for forms.
   const [newTask, setNewTask] = useState({
-    importance: "",
+    importance: 0,
     description: "",
     alertEmptyDescription: false,
   });
@@ -225,7 +225,7 @@ function CreateTaskModal(props) {
             <div style={{ fontSize: "0.7rem" }}>Importance</div>
             <TaskImportanceContainer
               name="importance"
-              type="text"
+              type="number"
               value={newTask.importance}
               onChange={(event) => onChangeHandler(event)}
             ></TaskImportanceContainer>
