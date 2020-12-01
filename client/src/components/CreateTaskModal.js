@@ -64,10 +64,19 @@ const CreateTaskIconContainer = styled.button`
   align-self: flex-start;
   display: flex;
   align-items: center;
+  justify-content: center;
   border-color: ${(props) =>
     props.toggle ? "rgba(186,0,84,1)" : "rgba(186,0,84,0.5)"};
-  width: ${(props) => (props.toggle ? "auto" : "100%")};
+  border: ${(props) =>
+    props.isDescription !== ""
+      ? "4px solid rgba(186,0,84,1)"
+      : "1px solid rgba(186,0,84,1)"};
+  border-color: ${(props) => (props.toggle ? "rgba(186,0,84,1)" : "#181a1b")};
+  border-radius: 3em;
+  width: ${(props) => (props.toggle ? "15%" : "100%")};
+  padding: 0.3em 0em;
   margin: 0.3em 0em;
+  transition: all 0.3s ease-in-out;
   &:hover {
     border: 2 px solid rgba(186, 0, 84, 0.8);
   }
@@ -92,10 +101,6 @@ const PlaceHolderPlusContainer = styled.div`
   align-items: center;
   padding-bottom: 0.1em;
   margin: 0.15em;
-  &:hover {
-    border: 1px solid red;
-    color: 2px solid red;
-  }
 `;
 
 const PlaceHolderTextContainer = styled.div`
@@ -244,6 +249,7 @@ function CreateTaskModal(props) {
       >
         <CreateTaskIconContainer
           toggle={toggle.isToggled}
+          isDescription={newTask.description}
           onClick={() => {
             toggleHandler();
             addTaskHandler(newTask);
