@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import { addTaskAction } from "../redux/actions/taskActions";
@@ -158,6 +158,9 @@ function CreateTaskModal(props) {
     }
   }, [taskMsg, clearSuccsessMessagesAction]);
 
+  // Reference to focus description after clicl on 'Create' tasl
+  const descriptionInput = useRef(null);
+
   //Local state to control msg displays.
   const [displayMsg, setDisplayMsg] = useState(false);
 
@@ -171,11 +174,11 @@ function CreateTaskModal(props) {
   // Local state to control toggle for task creation
   const [toggle, setToggle] = useState({ isToggled: false, numberOfClicks: 0 });
 
-  function toggleHandler() {}
   function addTaskHandler(newTask) {
     if (toggle.numberOfClicks === 0) {
       //Open modal on first click
       setToggle({ isToggled: true, numberOfClicks: 1 });
+      descriptionInput.current.focus();
     } else if (toggle.numberOfClicks === 1 && newTask.description !== "") {
       //On second click check if task description is completed, if so, dispatches addNewTask
       addTaskAction(newTask);
@@ -230,6 +233,7 @@ function CreateTaskModal(props) {
           <label htmlFor="description" style={{ width: "50%" }}>
             <CreateTaskDescriptionContainer
               name="description"
+              ref={descriptionInput}
               type="text"
               placeholder="Task description..."
               rows={4}
@@ -251,7 +255,6 @@ function CreateTaskModal(props) {
           toggle={toggle.isToggled}
           isDescription={newTask.description}
           onClick={() => {
-            toggleHandler();
             addTaskHandler(newTask);
           }}
         >
