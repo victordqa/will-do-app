@@ -159,7 +159,7 @@ function CreateTaskModal(props) {
     }
   }, [taskMsg, clearSuccsessMessagesAction]);
 
-  // Reference to focus description after clicl on 'Create' tasl
+  // Reference to focus description after click on 'Create' task
   const descriptionInput = useRef(null);
 
   //Local state to control msg displays.
