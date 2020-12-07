@@ -4,6 +4,7 @@ import { logInAction } from "../redux/actions/authActions";
 import { clearErrorsAction } from "../redux/actions/errorActions";
 import styled from "styled-components";
 
+// ===================Styles=====================
 const LogInContainer = styled.div`
   margin-top: 3rem;
   border: 1px solid rgba(61, 66, 69, 0.85);
@@ -50,20 +51,21 @@ const LogInButton = styled.button`
   }
 `;
 
+// ===================Component=====================
 function Login(props) {
   let { logInAction, clearErrorsAction, error, isAuth } = props;
+  //Destructure error info
   let errorId = error.id;
   let errorMsg = error.msg;
-  // Local states
+  // Local state to update input fields
   const [user, setUser] = useState({
-    email: "victor@gmail.com",
-    password: "1234",
+    email: "",
+    password: "",
   });
 
   //Display server messages
   const [statusMsg, setStatusMsg] = useState("");
   useEffect(() => {
-    console.log("use effect triggered");
     if (!isAuth && errorId === "LOGIN_FAILURE") {
       setStatusMsg(errorMsg);
     } else if (isAuth) {
@@ -74,14 +76,15 @@ function Login(props) {
   }, [isAuth, errorId, errorMsg, clearErrorsAction]);
 
   function logInHandler(user) {
-    //clear previous erros
+    //Clear previous erros
     clearErrorsAction();
-
     logInAction(user);
   }
   function onSubmitHandler(event) {
     event.preventDefault();
   }
+
+  //Updates stae of input fields
   function onChangeHandler(event) {
     let name = event.target.name;
     let value = event.target.value;

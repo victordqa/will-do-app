@@ -45,7 +45,7 @@ export const authReducer = (state = initialState, action) => {
     case LOGOUT_SUCCSESS:
       localStorage.removeItem("token");
       return {
-        ...state, //test if cloning the state is necessary
+        ...state,
         token: null,
         isAuth: false,
         isLoading: false,

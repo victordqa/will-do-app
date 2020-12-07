@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 import { addTaskAction } from "../redux/actions/taskActions";
 import { clearSuccsessMessagesAction } from "../redux/actions/taskActions";
 
+// ===================Style=====================
+
 const CreateTaskContainer = styled.div`
   border: 1px solid rgba(61, 66, 69, 0.85);
   color: inherit;
@@ -75,6 +77,7 @@ const CreateTaskIconContainer = styled.button`
   border-color: ${(props) => (props.toggle ? "rgba(186,0,84,1)" : "#181a1b")};
   border-radius: 3em;
   width: ${(props) => (props.toggle ? "15%" : "100%")};
+  min-width: 8em;
   padding: 0.3em 0em;
   margin: 0.3em 0em;
   transition: all 0.3s ease-in-out;
@@ -145,11 +148,12 @@ const MsgContainer = styled.div`
   transform: ${(props) =>
     props.displayMsg ? "translate(0, 0)" : "translate(100%, 0)"};
 `;
+// ===================Component=====================
 function CreateTaskModal(props) {
   let { addTaskAction, taskMsg, clearSuccsessMessagesAction, isAuth } = props;
 
   useEffect(() => {
-    //trigger msg modal
+    //Display add or delete msgs
     if (taskMsg !== "") {
       setDisplayMsg(true);
       setTimeout(() => {
@@ -165,17 +169,18 @@ function CreateTaskModal(props) {
   //Local state to control msg displays.
   const [displayMsg, setDisplayMsg] = useState(false);
 
-  //Local state for forms.
+  //Local state for user input.
   const [newTask, setNewTask] = useState({
     importance: 0,
     description: "",
     alertEmptyDescription: false,
   });
 
-  // Local state to control toggle for task creation
+  // Local state to control createa task expansion/contraction
   const [toggle, setToggle] = useState({ isToggled: false, numberOfClicks: 0 });
 
   function addTaskHandler(newTask) {
+    //Takes user back to home if token expiers
     if (!isAuth) {
       window.location.href = "http://localhost:3000/";
     } else if (toggle.numberOfClicks === 0) {
@@ -200,7 +205,7 @@ function CreateTaskModal(props) {
       });
     }
   }
-
+  //Updtate input fields state
   function onChangeHandler(event) {
     event.preventDefault();
     let name = event.target.name;

@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 import CreateTaskModal from "./CreateTaskModal";
 import { deleteTaskAction, getTasksAction } from "../redux/actions/taskActions";
 
+// ===================Styles=====================
+
 const taskAnimationHandler = (props) => {
   let horizontalDisp = 70 * 1.2;
   let verticalDisp = -60 * 1.2;
@@ -120,7 +122,7 @@ function Tasks({ deleteTaskAction, tasks, user, isAuth }) {
         if (task._id === taskId) {
           //Change animate property in local state so that only the card that had this prop changed will rerender
           //Note that passing  rendering the cards based on props that change all the time
-          // for all ther cards would be inefficient because of all the rerenderings
+          // for all ther cards would be inefficient
           return { ...task, animate: true };
         } else {
           return task;
