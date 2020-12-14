@@ -11,7 +11,7 @@ const CreateTaskContainer = styled.div`
     border: 1px solid rgba(61, 66, 69, 0.85);
     color: inherit;
     background-color: #181a1b;
-    border-radius: ${(props) => (props.isToggled ? '0.5em' : '50%')};
+    border-radius: ${(props) => (props.toggle ? '0.5em' : '2em')};
     display: flex;
     width: 100%;
     flex-direction: column;
@@ -179,14 +179,14 @@ function CreateTaskModal(props) {
 
     // Local state to control createa task expansion/contraction
     const [toggle, setToggle] = useState({
-        isToggled: false,
+        toggle: false,
         numberOfClicks: 0,
     })
 
     function addTaskHandler(newTask) {
         if (toggle.numberOfClicks === 0) {
             //Open modal on first click
-            setToggle({ isToggled: true, numberOfClicks: 1 })
+            setToggle({ toggle: true, numberOfClicks: 1 })
             descriptionInput.current.focus()
         } else if (toggle.numberOfClicks === 1 && newTask.description !== '') {
             //On second click check if task description is completed, if so, dispatches addNewTask
@@ -198,7 +198,7 @@ function CreateTaskModal(props) {
                 alertEmptyDescription: false,
             })
             //Closes modal, reset number of clicks
-            setToggle({ isToggled: false, numberOfClicks: 0 })
+            setToggle({ toggle: false, numberOfClicks: 0 })
         } else if (toggle.numberOfClicks === 1 && newTask.description === '') {
             setNewTask({
                 ...newTask,
@@ -219,12 +219,12 @@ function CreateTaskModal(props) {
         return <Redirect to={'/'} />
     }
     return (
-        <CreateTaskContainer toggle={toggle.isToggled}>
+        <CreateTaskContainer toggle={toggle.toggle}>
             <MsgContainer displayMsg={displayMsg}>{taskMsg}</MsgContainer>
             <div style={{ overflow: 'hidden', width: '100% ' }}>
                 <FormContainer
                     onSubmit={(e) => e.preventDefault()}
-                    toggle={toggle.isToggled}
+                    toggle={toggle.toggle}
                 >
                     <label
                         htmlFor="importance"
@@ -266,23 +266,23 @@ function CreateTaskModal(props) {
                 }}
             >
                 <CreateTaskIconContainer
-                    toggle={toggle.isToggled}
+                    toggle={toggle.toggle}
                     isDescription={newTask.description}
                     onClick={() => {
                         addTaskHandler(newTask)
                     }}
                 >
-                    <PlaceHolderPlusContainer toggle={toggle.isToggled}>
+                    <PlaceHolderPlusContainer toggle={toggle.toggle}>
                         &#65291;
                     </PlaceHolderPlusContainer>
-                    <PlaceHolderTextContainer toggle={toggle.isToggled}>
+                    <PlaceHolderTextContainer toggle={toggle.toggle}>
                         {toggle ? 'Create!' : 'Create new task...'}
                     </PlaceHolderTextContainer>
                 </CreateTaskIconContainer>
-                {toggle.isToggled ? (
+                {toggle.toggle ? (
                     <CloseButton
                         onClick={() =>
-                            setToggle({ isToggled: false, numberOfClicks: 0 })
+                            setToggle({ toggle: false, numberOfClicks: 0 })
                         }
                     >
                         Close
