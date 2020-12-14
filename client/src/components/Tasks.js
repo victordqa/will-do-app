@@ -16,7 +16,6 @@ const taskAnimationHandler = (props) => {
 }
 
 const TaskContainer = styled.div`
-    ${console.log('rendered tasks')}
     margin-top: 1rem;
     border: 1px solid rgba(61, 66, 69, 0.85);
     padding: 0.4rem;
@@ -113,10 +112,11 @@ function Tasks({ deleteTaskAction, tasks, user, isAuth }) {
         setLocalTasks(tasksArray)
     }, [tasks])
 
+    const [username, setUsername] = useState(user.username)
     useEffect(() => {
-        let username = user.username
-    }, [user.username])
-
+        setUsername(user.name)
+    }, [user.name])
+    console.log(user)
     function deleteAndAnimateTaskHandler(taskId) {
         setLocalTasks(
             localTasks.map((task) => {
@@ -185,7 +185,7 @@ function Tasks({ deleteTaskAction, tasks, user, isAuth }) {
 
     return (
         <div style={{ width: '100%' }}>
-            <h3>{isAuth && username ? `Hello ${user.username}!` : ''} </h3>
+            <h3>{isAuth && username ? `Hello ${username}!` : ''} </h3>
             <CreateTaskModal />
             <div>
                 {tasks.length === 0 ? 'No tasks to show :)' : mappedTasks}
