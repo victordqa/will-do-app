@@ -11,7 +11,7 @@ const CreateTaskContainer = styled.div`
     border: 1px solid rgba(61, 66, 69, 0.85);
     color: inherit;
     background-color: #181a1b;
-    border-radius: 0.5em;
+    border-radius: ${(props) => (props.isToggled ? '0.5em' : '50%')};
     display: flex;
     width: 100%;
     flex-direction: column;
@@ -219,7 +219,7 @@ function CreateTaskModal(props) {
         return <Redirect to={'/'} />
     }
     return (
-        <CreateTaskContainer>
+        <CreateTaskContainer toggle={toggle.isToggled}>
             <MsgContainer displayMsg={displayMsg}>{taskMsg}</MsgContainer>
             <div style={{ overflow: 'hidden', width: '100% ' }}>
                 <FormContainer
