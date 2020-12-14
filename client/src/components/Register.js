@@ -84,12 +84,9 @@ function Register(props) {
         let value = event.target.value
         setUser({ ...user, [name]: value })
     }
-
     if (isAuth) {
-        setStatusMsg('Registered! You are good to go.')
         return <Redirect to={'/tasks'} />
     }
-
     return (
         <div>
             <RegisterContainer>
