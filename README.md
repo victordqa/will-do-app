@@ -5,8 +5,14 @@ This app was build for learning purposes, based on Traversy Media You Tube Serie
 
 * Build and deploy fullstack MERN app,
 * REDUX,
+* Password hash and salt,
 * User Authentication using JSON  Web  Token.
 
+Main changes when compared to original tutorial:
+
+* No boostrap used to exercise front-end skills,
+* Changed the app from a shopping list, where all authenticated users can see and edit the items of the list, to a to-do list, where
+  users can only visualize and change their own tasks.
 
 ## Usage
 Using Chrome:
