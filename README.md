@@ -10,7 +10,8 @@ This app was build for learning purposes, based on Traversy Media You Tube Serie
 
 Main changes when compared to original tutorial:
 
-* No boostrap used to exercise front-end skills,
+* No bootstrap used to exercise front-end skills,
+* Used styled-components for styling
 * Changed the app from a shopping list, where all authenticated users can see and edit the items of the list, to a to-do list, where
   users can only visualize and change their own tasks.
 
